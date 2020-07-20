@@ -1,0 +1,9 @@
+[MASTER]
+load-plugins=pylint_django
+jobs=0
+
+[BASIC]
+ignore=migrations,settings.py,settings_dev.py,settings_ci.py,settings_prod.py,scripts
+
+[MISCELLANDOUS]
+notes=FIXME

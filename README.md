@@ -1,3 +1,3 @@
 # Graminsta
 
-Post your favoriate photos and receive :heart: from your friends!
+Post your favorite photos and receive :heart: from your friends!

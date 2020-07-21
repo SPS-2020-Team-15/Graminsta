@@ -11,9 +11,13 @@ jobs:
         - find . -type d -maxdepth 2 -not -path '.' -not -path 'graminsta' | xargs python -m pylint
     - language: dart
       dart: stable
+      before_install:
+        - cd flutter/Graminsta
       dart_task:
         - dartanalyzer: --fatal-warnings lib
     - language: dart
       dart: stable
+      before_install:
+        - cd flutter/Graminsta
       dart_task:
         - dartfmt

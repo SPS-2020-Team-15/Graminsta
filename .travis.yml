@@ -11,13 +11,20 @@ jobs:
         - find . -type d -maxdepth 2 -not -path '.' -not -path 'graminsta' | xargs python -m pylint
     - language: dart
       dart: stable
+      addons:
+        apt:
+          packages:
+            - lib32stdc++6
       before_install:
         - cd flutter/Graminsta
+      install:
+        - git clone https://github.com/flutter/flutter.git -b stable
+        - ./flutter/bin/flutter doctor
+      script:
+        - ./flutter/bin/flutter test --coverage
       dart_task:
         - dartanalyzer: --fatal-warnings lib
-    - language: dart
-      dart: stable
-      before_install:
-        - cd flutter/Graminsta
-      dart_task:
-        - dartfmt
+      cache:
+        directories:
+          - $HOME/.pub-cache
+

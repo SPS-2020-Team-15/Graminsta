@@ -18,7 +18,7 @@ jobs:
       before_install:
         - cd flutter/Graminsta
       dart_task:
-        - dartfmt
+        dartfmt: True
       cache:
         directories:
           - $HOME/.pub-cache

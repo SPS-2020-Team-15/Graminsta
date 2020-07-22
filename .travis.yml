@@ -22,8 +22,6 @@ jobs:
         - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/flutter test
-      dart_task:
-        - dartfmt
       cache:
         directories:
           - $HOME/.pub-cache

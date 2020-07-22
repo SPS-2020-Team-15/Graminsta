@@ -17,11 +17,8 @@ jobs:
             - lib32stdc++6
       before_install:
         - cd flutter/Graminsta
-      install:
-        - git clone https://github.com/flutter/flutter.git -b stable
-        - ./flutter/bin/flutter doctor
-      script:
-        - ./flutter/bin/flutter test -v
+      dart_task:
+        - dartfmt
       cache:
         directories:
           - $HOME/.pub-cache

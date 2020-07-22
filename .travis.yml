@@ -15,14 +15,12 @@ jobs:
         apt:
           packages:
             - lib32stdc++6
-      before_install:
-        - cd flutter/Graminsta
       install:
         - git clone https://github.com/flutter/flutter.git -b stable
-        - ./flutter/bin/flutter doctor
+        - $HOME/flutter/bin/flutter doctor
       dart_task:
         dartfmt: True
-        dartanalyzer: --fatal-warnings
+        dartanalyzer: --fatal-warnings flutter/Graminsta
       cache:
         directories:
           - $HOME/.pub-cache

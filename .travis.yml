@@ -16,7 +16,7 @@ jobs:
           packages:
             - lib32stdc++6
       install:
-        - git clone https://github.com/flutter/flutter.git -b stable sdk
+        - git clone https://github.com/flutter/flutter.git -b stable sdk/flutter
         - $HOME/sdk/flutter/bin/flutter doctor
       dart_task:
         dartfmt: True

@@ -22,8 +22,6 @@ jobs:
         - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/flutter test --coverage
-      dart_task:
-        - dartanalyzer: --fatal-warnings lib
       cache:
         directories:
           - $HOME/.pub-cache

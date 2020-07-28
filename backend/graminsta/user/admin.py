@@ -1,3 +1,3 @@
-from django.contrib import admin
+# -*- coding: UTF-8 -*-
 
 # Register your models here.

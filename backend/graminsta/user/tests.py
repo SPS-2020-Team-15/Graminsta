@@ -1,3 +1,3 @@
-from django.test import TestCase
+# -*- coding: UTF-8 -*-
 
 # Create your tests here.

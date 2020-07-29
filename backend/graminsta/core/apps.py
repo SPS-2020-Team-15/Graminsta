@@ -6,7 +6,7 @@
 from django.apps import AppConfig
 
 
-class UserConfig(AppConfig):
-    """Default UserConfig Class
+class CoreConfig(AppConfig):
+    """Default CoreConfig Class
     """
-    name = 'user'
+    name = 'core'

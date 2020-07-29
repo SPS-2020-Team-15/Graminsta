@@ -15,4 +15,8 @@ class UserInfo(models.Model):
     age = models.IntegerField()
     gender = models.CharField(max_length=10)
     reg_time = models.DateTimeField(auto_now=True)
-    following_user = models.ManyToManyField("self", symmetrical=False)
+    following_users = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        related_name="following_users"
+    )

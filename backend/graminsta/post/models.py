@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
     """
-    A Post is usually user generated which contains information like an image, 
+    A Post is usually user generated which contains information like an image,
         and some description to the image
     """
     publisher = models.ForeignKey(

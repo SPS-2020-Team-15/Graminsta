@@ -11,10 +11,10 @@ from django.contrib.auth import models as auth_models
 class UserInfo(models.Model):
     """UserInfo Class
     """
-    user = models.OneToOneField(auth_models.User, on_delete=models.CASCADE)
-    age = models.PositiveIntegerField()
-
     GENDER_MALE = 0
     GENDER_FEMALE = 1
-    GENDER_CHOICES = [(GENDER_MALE, 'Male'), (GENDER_FEMALE, 'Female')]
+    GENDER_CHOICES = ((GENDER_MALE, 'Male'), (GENDER_FEMALE, 'Female'))
+
+    user = models.OneToOneField(auth_models.User, on_delete=models.CASCADE)
+    age = models.PositiveIntegerField()
     gender = models.IntegerField(choices=GENDER_CHOICES)

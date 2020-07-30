@@ -5,19 +5,33 @@ from django.contrib.auth import models as auth_models
 
 
 class Post(models.Model):
-    """A Post is usually user-generated which contains information
-    like an image, and some description to the image"""
-    publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE,
-                                  related_name="published_posts")
+    """
+    A Post is usually user generated which contains information like an image, and some description to the image
+    """
+    publisher = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="published_posts")
+    time = models.DateTimeField(auto_now=True)
+    marked_user = models.ManyToManyField(User, related_name="marked_post")
+    image_url = models.TextField()
     description = models.TextField()
-    img = models.ImageField(upload_to='img')
-    marked_users = models.ManyToManyField(auth_models.User,
-                                          related_name="marking_users")
+    stars = models.IntegerField()
 
 
 class Comment(models.Model):
-    """A comment is usually user-generated under other user's post,
-    which contains some text"""
-    publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    """
+    A comment is users' feedback for a given post
+    """
+    publisher = models.ForeignKey(User, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.TextField()
+
+
+class Following(models.Model):
+    """
+    Follow represents the relationship between follower and target
+    """
+    target = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followed_by")
+    follower = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="follow")

@@ -1,12 +1,14 @@
 # -*- coding: UTF-8 -*-
-"""models.py"""
+"""This models.py defines the model of our post app"""
+
 from django.db import models
-from django.contrib.auth import models as auth_models
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
     """
-    A Post is usually user generated which contains information like an image, and some description to the image
+    A Post is usually user generated which contains information like an image, 
+        and some description to the image
     """
     publisher = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="published_posts")

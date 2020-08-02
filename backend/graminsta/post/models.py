@@ -13,7 +13,7 @@ class Post(models.Model):
                                   related_name="published_posts")
     description = models.TextField()
     img = models.ImageField(upload_to='img')
-    marked_users = models.ManyToManyField(auth_models.User,
+    marked_user = models.ManyToManyField(auth_models.User,
                                           related_name="marking_users")
     time = models.DateTimeField(auto_now=True)
 

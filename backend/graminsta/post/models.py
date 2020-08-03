@@ -48,6 +48,7 @@ class FollowRelationship(models.Model):
     class Meta:
         """
         Meta configuration for FollowRelationShip model.
+        
         It ensures the uniqueness of the relationship (to_user, from_user).
         """
         unique_together = (('to_user', 'from_user'),)

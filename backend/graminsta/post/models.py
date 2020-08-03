@@ -15,7 +15,7 @@ class Post(models.Model):
     img = models.ImageField(upload_to='img')
     marked_user = models.ManyToManyField(auth_models.User,
                                          related_name="marking_users")
-    time = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):
@@ -25,7 +25,7 @@ class Comment(models.Model):
     """
     publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    time = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class FollowRelationship(models.Model):
@@ -42,11 +42,12 @@ class FollowRelationship(models.Model):
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return u"%s is following %s" % (self.from_user.username,
-                                        self.to_user.username)
+        return '%s is following %s' % (self.from_user.username,
+                                       self.to_user.username)
 
     class Meta:
         """
-        Meta configuration to make sure each follow relationship unique.
+        Meta configuration for FollowRelationShip model.
+        It ensures the uniqueness of the relationship (to_user, from_user).
         """
         unique_together = (('to_user', 'from_user'),)

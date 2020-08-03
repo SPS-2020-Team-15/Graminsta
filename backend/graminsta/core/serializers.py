@@ -11,7 +11,7 @@ from .models import UserInfo
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    UserSerializer defined for User model.
+    Serializer that serializes/deserializes User object
     """
     class Meta:
         """
@@ -25,11 +25,12 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password',
         )
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
     """
-    UserInfoSerializer for  UserInfo class
+    Serializer that serializes/deserializes UserInfo object
     """
     user = UserSerializer(required=True)
 
@@ -43,19 +44,3 @@ class UserInfoSerializer(serializers.ModelSerializer):
             'age',
             'gender',
         )
-
-    def create(self, validated_data):
-        """
-        Overriding the default create method of the Model Serializer.
-        :param validated_data: data containing all the details of student
-        :return: returns a successfully created Userinfo record
-        """
-        user_data = validated_data.pop('user')
-        user = UserSerializer.create(
-            UserSerializer(), validated_data=user_data)
-        user_info = UserInfo.objects.update_or_create(
-            user=user,
-            age=validated_data.pop('age'),
-            gender=validated_data.pop('gender')
-        )[0]
-        return user_info

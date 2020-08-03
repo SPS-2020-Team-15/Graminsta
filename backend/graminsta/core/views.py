@@ -6,8 +6,8 @@ Register and Login.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserInfo
-from .serializers import UserInfoSerializer
+from .services import get_all_user_infos
+from .services import create_or_update_userinfo
 
 
 class UserInfoRecordView(APIView):
@@ -16,25 +16,40 @@ class UserInfoRecordView(APIView):
     """
 
     def get(self, request=None):
+        """Get all the UserInfo records
+
+        Parameters
+        ----------
+        request: json format
+            Data containing request informationm, or None.
+
+        Returns
+        -------
+        response: json format
+            A list of UserInfo records
         """
-        Get all the UserInfo records
-        :return: returns a list of UserInfo records
-        """
-        user_infos = UserInfo.objects.all()
-        serializer = UserInfoSerializer(user_infos, many=True)
-        return Response(serializer.data)
+        return Response(get_all_user_infos())
 
     def post(self, request):
+        """Create a UserInfo record
+
+        Parameters
+        ----------
+        request: json format
+            Data containing request informationm, or None.
+
+        Returns
+        -------
+        response: json format
+            Newly created user_info
         """
-        Create a student record
-        :param request: Request object for catching student
-        :return: returns a student record
-        """
-        serializer = UserInfoSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=ValueError):
-            serializer.create(validated_data=request.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return_type = create_or_update_userinfo(request.data)
+        if 'error' in return_type.keys():
+            return Response(
+                return_type['error'],
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response(
-            serializer.error_messages,
-            status=status.HTTP_400_BAD_REQUEST
+            return_type['user_info'],
+            status=status.HTTP_201_CREATED
         )

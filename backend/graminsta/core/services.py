@@ -23,7 +23,7 @@ def create_userinfo(validated_data):
         a successfully created User record
     """
     userinfo_serializer = UserInfoSerializer(data=validated_data)
-    if userinfo_serializer.is_valid(raise_exception=ValueError):
+    if userinfo_serializer.is_valid(raise_exception=True):
         user_data = validated_data.pop('user')
         user = UserSerializer.create(
             UserSerializer(), validated_data=user_data)
@@ -32,5 +32,5 @@ def create_userinfo(validated_data):
             age=validated_data.pop('age'),
             gender=validated_data.pop('gender')
         )[0]
-        return {'user_info': user_info}
-    return {'error': userinfo_serializer.errors}
+        return user_info
+    return None

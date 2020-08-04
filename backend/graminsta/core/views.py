@@ -28,13 +28,8 @@ class UserInfoRecordView(APIView):
         response: json format
             Newly created user_info
         """
-        return_type = create_userinfo(request.data)
-        if 'error' in return_type.keys():
-            return Response(
-                return_type['error'],
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        user_info = create_userinfo(request.data)
         return Response(
-            UserInfoSerializer(return_type['user_info']).data,
+            UserInfoSerializer(user_info).data,
             status=status.HTTP_201_CREATED
         )

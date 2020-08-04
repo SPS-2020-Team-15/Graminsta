@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-Here defines services provided for views.py
+Services for core module.
 """
 
 from .serializers import UserSerializer
@@ -9,7 +9,7 @@ from .serializers import UserInfoSerializer
 from .models import UserInfo
 
 
-def create_or_update_userinfo(validated_data):
+def create_userinfo(validated_data):
     """Create or update a UserInfo in databaase.
 
     Parameters
@@ -32,18 +32,5 @@ def create_or_update_userinfo(validated_data):
             age=validated_data.pop('age'),
             gender=validated_data.pop('gender')
         )[0]
-        return {'user_info': UserInfoSerializer(user_info).data}
+        return {'user_info': user_info}
     return {'error': userinfo_serializer.errors}
-
-
-def get_all_user_infos():
-    """Get all user_infos
-
-    Returns
-    -------
-    user_info: json format
-        A list of UserInfo records
-    """
-    user_infos = UserInfo.objects.all()
-    serializer = UserInfoSerializer(user_infos, many=True)
-    return serializer.data

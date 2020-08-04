@@ -6,7 +6,6 @@ Register and Login.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import get_all_user_infos
 from .services import create_userinfo
 from .serializers import UserInfoSerializer
 

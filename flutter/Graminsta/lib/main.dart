@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Graminsta/auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Graminsta",
-      home: HomePage(),
+      home: AuthPage(),
     );
   }
 }
@@ -27,15 +28,11 @@ class _HomePageState extends State<HomePage> {
     Text(
       'Index 0: Home',
       style: optionStyle,
-    ),
-    Text(
-      'Index 1: Alert',
-      style: optionStyle,
-    ),
+    ),//change this into the timeline page.
     Text(
       'Index 2: Person',
       style: optionStyle,
-    ),
+    ),//change this into the gallery page.
   ];
 
   void _onItemTapped(int index) {
@@ -77,16 +74,12 @@ class _HomePageState extends State<HomePage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_alert),
-            title: Text('Alert'),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('Person'),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
     );
@@ -101,7 +94,7 @@ class Add extends StatelessWidget {
         title: Text("Add Post"),
       ),
       body: Center(
-        child: Text("Add Post"),
+        child: Text("Add Post"),//change this into the create new post page.
       ),
     );
   }

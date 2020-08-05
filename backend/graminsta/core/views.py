@@ -21,7 +21,7 @@ class UserInfoRecordView(APIView):
         Parameters
         ----------
         request: json format
-            Data containing request informationm, or None.
+            Data containing request information, or None.
 
         Returns
         -------

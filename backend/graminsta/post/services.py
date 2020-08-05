@@ -36,3 +36,4 @@ def delete_follow_relationship(data):
     relationship = FollowRelationship.objects.get(from_user=data['from_user'],
                                                   to_user=data['to_user'])
     relationship.delete()
+    return None

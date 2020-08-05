@@ -1,3 +1,7 @@
-# from django.contrib import admin
+# -*- coding: UTF-8 -*-
+"""admin.py"""
 
-# Register your models here.
+from django.contrib import admin
+from .models import FollowRelationship
+
+admin.site.register(FollowRelationship)

@@ -10,7 +10,7 @@ from .models import UserInfo
 
 
 def create_userinfo(validated_data):
-    """Create or update a UserInfo in databaase.
+    """Create or update a UserInfo in database.
 
     Parameters
     ----------

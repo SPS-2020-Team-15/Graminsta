@@ -34,8 +34,8 @@ class FollowView(APIView):
         request: json format
             Data containing from_user and to_user
         """
-        delete_follow_relationship(request.data)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        response = delete_follow_relationship(request.data)
+        return response
 
     def get(self, request, username):
         """Gets the given user's following people

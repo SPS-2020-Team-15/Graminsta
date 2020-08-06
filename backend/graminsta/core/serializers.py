@@ -6,7 +6,6 @@ Here defines model serializers.
 
 from django.contrib.auth import models as auth_models
 from rest_framework import serializers
-from .models import UserInfo
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,21 +26,3 @@ class UserSerializer(serializers.ModelSerializer):
             'password',
         )
         extra_kwargs = {'password': {'write_only': True}}
-
-
-class UserInfoSerializer(serializers.ModelSerializer):
-    """
-    Serializer that serializes/deserializes UserInfo object
-    """
-    user = UserSerializer(required=True)
-
-    class Meta:
-        """
-        Meta Information
-        """
-        model = UserInfo
-        fields = (
-            'user',
-            'age',
-            'gender',
-        )

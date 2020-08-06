@@ -13,7 +13,8 @@ class FollowView(APIView):
     """
     A class based view to manage follow relationship.
     """
-    def post(self, request):
+    @staticmethod
+    def post(request):
         """Creates a new follow relationship
         Parameters
         ----------
@@ -27,17 +28,19 @@ class FollowView(APIView):
         relationship = create_follow_relationship(request.data)
         return Response(relationship, status=status.HTTP_201_CREATED)
 
-    def delete(self, request):
+    @staticmethod
+    def delete(request):
         """Deletes an existing follow relationship
         Parameters
         ----------
         request: json format
             Data containing from_user and to_user
         """
-        response = delete_follow_relationship(request.data)
-        return response
+        delete_follow_relationship(request.data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def get(self, request, username):
+    @staticmethod
+    def get(request, username):
         """Gets the given user's following people
         Parameters
         ----------

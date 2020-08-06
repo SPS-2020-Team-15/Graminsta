@@ -2,8 +2,6 @@
 """services.py"""
 
 from django.contrib.auth import models as auth_models
-from rest_framework.response import Response
-from rest_framework import status
 from core.serializers import UserSerializer
 from .serializers import FollowSerializer
 from .models import FollowRelationship
@@ -38,4 +36,3 @@ def delete_follow_relationship(data):
     relationship = FollowRelationship.objects.get(from_user=data['from_user'],
                                                   to_user=data['to_user'])
     relationship.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)

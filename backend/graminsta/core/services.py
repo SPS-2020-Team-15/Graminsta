@@ -27,9 +27,9 @@ def create_userinfo(validated_data):
     user_data = validated_data.pop('user')
     user = UserSerializer.create(
         UserSerializer(), validated_data=user_data)
-    user_info = UserInfo.objects.update_or_create(
+    user_info = UserInfo.objects.create(
         user=user,
         age=validated_data.pop('age'),
         gender=validated_data.pop('gender')
-    )[0]
+    )
     return user_info

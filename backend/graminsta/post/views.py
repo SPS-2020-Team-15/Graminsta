@@ -1,3 +1,55 @@
-# from django.shortcuts import render
+# -*- coding: UTF-8 -*-
+"""views.py"""
 
-# Create your views here.
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from .services import (create_follow_relationship,
+                       delete_follow_relationship,
+                       get_people_user_follows)
+
+
+class FollowView(APIView):
+    """
+    A class based view to manage follow relationship.
+    """
+    @staticmethod
+    def post(request):
+        """Creates a new follow relationship
+        Parameters
+        ----------
+        request: json format
+            Data containing from_user and to_user
+        Returns
+        -------
+        response: json format
+            Newly created follow relationship or errors
+        """
+        relationship = create_follow_relationship(request.data)
+        return Response(relationship.data, status=status.HTTP_201_CREATED)
+
+    @staticmethod
+    def delete(request):
+        """Deletes an existing follow relationship
+        Parameters
+        ----------
+        request: json format
+            Data containing from_user and to_user
+        """
+        delete_follow_relationship(request.data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @staticmethod
+    def get(request, username):
+        """Gets the given user's following people
+        Parameters
+        ----------
+        request: get request
+        username: str
+        Returns
+        -------
+        response: json format
+            Users that follows the given user
+        """
+        following_people = get_people_user_follows(username)
+        return Response(following_people.data)

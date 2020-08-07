@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Graminsta/login.dart';
+import 'package:Graminsta/auth/login.dart';
 
 class AuthPage extends StatefulWidget {
   AuthPage({Key key}) : super(key: key);
@@ -16,11 +16,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _pageController = new PageController();
-    _pageView = new PageView(
+    _pageController = PageController();
+    _pageView = PageView(
       controller: _pageController,
       children: <Widget>[
-        new LoginPage(),
+        LoginPage(),
         Text("Register"),
       ],
       onPageChanged: (index) {
@@ -33,29 +33,29 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        body: new SafeArea(
-      child: new SingleChildScrollView(
-          child: new Container(
+    return Scaffold(
+        body: SafeArea(
+      child: SingleChildScrollView(
+          child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: new Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  new SizedBox(
+                  SizedBox(
                     height: 75,
                   ),
-                  new Container(
+                  Container(
                     width: 250,
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       color: Colors.grey,
                     ),
-                    child: new Row(
+                    child: Row(
                       children: <Widget>[
                         Expanded(
-                            child: new Container(
+                            child: Container(
                           decoration: _currentPage == 0
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.all(
@@ -64,14 +64,14 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                   color: Colors.white,
                                 )
                               : null,
-                          child: new Center(
-                            child: new FlatButton(
+                          child: Center(
+                            child: FlatButton(
                               onPressed: () {
                                 _pageController.animateToPage(0,
                                     duration: Duration(milliseconds: 500),
                                     curve: Curves.decelerate);
                               },
-                              child: new Text(
+                              child: Text(
                                 "Login",
                                 style: TextStyle(fontSize: 16),
                               ),
@@ -79,7 +79,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           ),
                         )),
                         Expanded(
-                            child: new Container(
+                            child: Container(
                           decoration: _currentPage == 1
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.all(
@@ -88,14 +88,14 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                   color: Colors.white,
                                 )
                               : null,
-                          child: new Center(
-                            child: new FlatButton(
+                          child: Center(
+                            child: FlatButton(
                               onPressed: () {
                                 _pageController.animateToPage(1,
                                     duration: Duration(milliseconds: 500),
                                     curve: Curves.decelerate);
                               },
-                              child: new Text(
+                              child: Text(
                                 "Register",
                                 style: TextStyle(fontSize: 16),
                               ),
@@ -105,7 +105,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  new Expanded(child: _pageView),
+                  Expanded(child: _pageView),
                 ],
               ))),
     ));

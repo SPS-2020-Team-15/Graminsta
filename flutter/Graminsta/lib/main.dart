@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Graminsta/auth.dart';
+import 'package:Graminsta/auth/auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,11 +28,11 @@ class _HomePageState extends State<HomePage> {
     Text(
       'Index 0: Home',
       style: optionStyle,
-    ),//change this into the timeline page.
+    ), //change this into the timeline page.
     Text(
       'Index 2: Person',
       style: optionStyle,
-    ),//change this into the gallery page.
+    ), //change this into the gallery page.
   ];
 
   void _onItemTapped(int index) {
@@ -49,8 +49,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.menu),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -94,7 +93,7 @@ class Add extends StatelessWidget {
         title: Text("Add Post"),
       ),
       body: Center(
-        child: Text("Add Post"),//change this into the create new post page.
+        child: Text("Add Post"), //change this into the create new post page.
       ),
     );
   }

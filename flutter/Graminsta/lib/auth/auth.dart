@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/login.dart';
+import "package:Graminsta/spec/spacing.dart";
 
 class AuthPage extends StatefulWidget {
   AuthPage({Key key}) : super(key: key);
@@ -34,28 +35,28 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SizedBox(
-                    height: 75,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(
+                  height: authTopSpacing,
+                ),
+                Container(
+                  width: 250,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    color: Colors.grey,
                   ),
-                  Container(
-                    width: 250,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: Colors.grey,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
                           decoration: _currentPage == 0
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.all(
@@ -77,9 +78,10 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                        )),
-                        Expanded(
-                            child: Container(
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
                           decoration: _currentPage == 1
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.all(
@@ -101,13 +103,17 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                        )),
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(child: _pageView),
-                ],
-              ))),
-    ));
+                ),
+                Expanded(child: _pageView),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

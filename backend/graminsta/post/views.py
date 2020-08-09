@@ -5,9 +5,9 @@ Views for post and comment APIs
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
 from .serializers import PostSerializer
 from .services import create_post
+from rest_framework.parsers import MultiPartParser
 
 
 class PostRecordView(APIView):

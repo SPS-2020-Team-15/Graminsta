@@ -3,7 +3,7 @@ Urls for post app.
 """
 
 from django.urls import path
-from post.views import PostRecordView
+from .views import PostRecordView
 
 
 app_name = 'post'

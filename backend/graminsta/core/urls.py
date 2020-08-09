@@ -5,7 +5,7 @@ Urls for core app.
 """
 
 from django.urls import path
-from core.views import UserInfoRecordView
+from .views import UserInfoRecordView
 
 
 app_name = 'core'

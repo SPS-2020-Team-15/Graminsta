@@ -7,7 +7,8 @@ Services for core module.
 from .serializers import UserSerializer
 from .serializers import UserInfoSerializer
 from .models import UserInfo
-
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
 
 def create_userinfo(validated_data):
     """Create or update a UserInfo in database.
@@ -33,3 +34,20 @@ def create_userinfo(validated_data):
         gender=validated_data.pop('gender')
     )
     return user_info
+
+
+def user_authentication(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        login(request, user)        
+        try:
+            token = Token.objects.get(user=user)
+            token.delete()
+            token = Token.objects.create(user=user)
+        except:
+            token = Token.objects.create(user=user)
+        return token.key
+    else:
+        return None

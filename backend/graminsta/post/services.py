@@ -2,10 +2,9 @@
 Service functions for post module
 """
 
-
-from .models import Post
-from django.contrib.auth import get_user_model
 import datetime
+from django.contrib.auth import get_user_model
+from .models import Post
 
 
 def create_post(publisher_id, description, img):

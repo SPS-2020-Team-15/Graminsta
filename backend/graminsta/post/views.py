@@ -4,7 +4,6 @@ from rest_framework import status
 from .serializers import PostSerializer
 from .services import create_post
 from rest_framework.parsers import MultiPartParser
-from django.contrib.auth import models as auth_models
 
 
 class PostRecordView(APIView):

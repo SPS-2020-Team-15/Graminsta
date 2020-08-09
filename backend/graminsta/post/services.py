@@ -3,10 +3,7 @@ Service functions for post module
 """
 
 from .serializers import PostSerializer
-from django.contrib.auth import get_user_model
-from .serializers import CommentSerializer
 from .models import Post
-from .models import Comment
 import datetime
 
 

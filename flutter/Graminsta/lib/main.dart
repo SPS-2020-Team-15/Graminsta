@@ -1,6 +1,6 @@
-import 'package:Graminsta/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,7 +9,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Graminsta",
-      home: LoginPage(),
+      initialRoute: '/home',
+      routes: {
+        '/auth': (context) => AuthPage(),
+        '/home': (context) => HomePage(),
+      },
     );
   }
 }
@@ -42,21 +46,55 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = await prefs.clear();
+    if (result) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/auth',
+        (route) => route == null,
+      );
+    }
+  }
+
+  get _drawer => Drawer(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.power_settings_new),
+              title: Text('Logout'),
+              onTap: () {
+                _logout();
+              },
+            )
+          ],
+        ),
+      );
+
+  getIsLogin() async{
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('user_token') ?? '';
+    debugPrint('user_token: $token');
+    return token;
+  }
+
   @override
   Widget build(BuildContext context) {
+    getIsLogin().then((token)=> {
+      if(token == ""){
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AuthPage(),maintainState: false))
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Graminsta'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
+      endDrawer: _drawer,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

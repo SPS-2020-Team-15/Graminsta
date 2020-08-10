@@ -1,1 +1,1 @@
-const double authTopSpacing = 75;
+const double authTopSpacing = 100;

@@ -3,7 +3,6 @@
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from core.serializers import UserSerializer
 from .models import FollowRelationship
 
 
@@ -23,8 +22,7 @@ def get_people_user_follows(username):
     user = get_user_model().objects.get(username=username)
     ids = FollowRelationship.objects.filter(from_user=user) \
         .values_list('to_user_id', flat=True)
-    queryset = get_user_model().objects.filter(id__in=ids)
-    following_people = UserSerializer(queryset, many=True)
+    following_people = get_user_model().objects.filter(id__in=ids)
     return following_people
 
 

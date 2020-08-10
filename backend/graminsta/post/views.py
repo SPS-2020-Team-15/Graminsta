@@ -4,6 +4,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from core.serializers import UserSerializer
 from .serializers import FollowSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
@@ -65,4 +66,4 @@ class FollowView(APIView):
             Users that follows the given user
         """
         following_people = get_people_user_follows(username)
-        return Response(following_people.data)
+        return Response(UserSerializer(following_people, many=True).data)

@@ -1,6 +1,5 @@
-import 'package:Graminsta/auth/login.dart';
-import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Graminsta",
-      home: LoginPage(),
+      home: AuthPage(),
     );
   }
 }

@@ -12,18 +12,19 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: <Widget>[
-          _LoginForm(),
+          _loginForm(),
           MaterialButton(
             color: Colors.blue,
             textColor: Colors.white,
             child: Text('Login'),
+            onPressed: () { },
           )
         ],
       ),
     );
   }
 
-  Widget _LoginForm() {
+  Widget _loginForm() {
     return Container(
       width: 300,
       height: 120,

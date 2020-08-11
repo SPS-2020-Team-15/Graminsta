@@ -40,28 +40,7 @@ class FollowView(APIView):
         Parameters
         ----------
         request: json format
-            Data containing publisher_id, description and image binary data
-
-        Returns
-        ----------
-        response: json format
-            Newly created post
-        """
-
-        # _ is not allowed in header key
-        # TODO: get user from request
-        publisher_id = int(request.META.get("HTTP_PUBLISHERID"))
-        description = request.data["description"]
-        img = request.data["img"]
-        mention_user_ids = request.data["mention_user_ids"]
-        post = create_post(publisher_id, description, img, mention_user_ids)
-        return Response(
-            PostSerializer(post).data,
-            status=status.HTTP_201_CREATED
-        )
-
-        """
-        Data containing from_user and to_user
+            Data containing from_user and to_user
         """
         request_user = request.user
         target_user_id = request.data.get('target_user')

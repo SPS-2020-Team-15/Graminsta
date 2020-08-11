@@ -1,0 +1,1 @@
+const double authTopSpacing = 200;

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       style: optionStyle,
     ), //change this into the timeline page.
     Text(
-      'Index 2: Person',
+      'Index 1: Person',
       style: optionStyle,
     ), //change this into the gallery page.
   ];
@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _logout() async {
+    //clear SharedPreferences and redirect to AuthPage.
     final prefs = await SharedPreferences.getInstance();
     final result = await prefs.clear();
     if (result) {
@@ -57,7 +58,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  get _drawer => Drawer(
+  getUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('user_token') ?? '';
+    debugPrint('user_token: $token');
+    return token;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //check user login status. If there is no token, redirect to AuthPage.
+    getUserToken().then((token) => {
+          if (token == "")
+            {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/auth',
+                (route) => route == null,
+              )
+            }
+        });
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Graminsta'),
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
             ListTile(
@@ -69,32 +97,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-      );
-
-  getIsLogin() async{
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('user_token') ?? '';
-    debugPrint('user_token: $token');
-    return token;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    getIsLogin().then((token)=> {
-      if(token == ""){
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AuthPage(),maintainState: false))
-      }
-    });
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Graminsta'),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      endDrawer: _drawer,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

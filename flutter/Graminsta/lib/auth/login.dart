@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Graminsta/http.dart';
 import 'package:dio/dio.dart';
 
 class LoginPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       var token = response.data;
       final prefs = await SharedPreferences.getInstance();
       final setTokenResult = await prefs.setString('user_token', token);
+      HttpManager.setHeader();
       if (setTokenResult) {
         //if set token success, redirect to homepage
         Navigator.of(context).pushNamedAndRemoveUntil(

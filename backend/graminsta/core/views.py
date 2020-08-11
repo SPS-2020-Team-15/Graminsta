@@ -55,7 +55,7 @@ class UserLoginView(APIView):
             return "Login Failed" if authentication does not pass.
             return the anth token if the authentication passes.
         """
-        token = {'token': user_authentication(request)}
+        token = user_authentication(request)
         if (token == None): 
             return Response(
                 "Login Failed",

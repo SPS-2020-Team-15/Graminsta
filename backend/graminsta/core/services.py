@@ -9,6 +9,7 @@ from .serializers import UserInfoSerializer
 from .models import UserInfo
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
+import json
 
 def create_userinfo(validated_data):
     """Create or update a UserInfo in database.
@@ -37,10 +38,9 @@ def create_userinfo(validated_data):
 
 
 def user_authentication(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None and user.is_active:
+    request_form = json.loads(request.body)
+    user = authenticate(username=request_form["username"], password=request_form["password"])
+    if user is not None:
         login(request, user)        
         try:
             token = Token.objects.get(user=user)

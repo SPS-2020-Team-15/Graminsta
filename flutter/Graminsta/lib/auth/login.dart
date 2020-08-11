@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:Graminsta/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,20 +12,22 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   void login() async {
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-    };
-    final form = jsonEncode({
+    final form = {
       "username": _usernameController.text,
       "password": _passwordController.text,
-    });
-
-    var response = await http.post("http://10.0.2.2:8000/core/login/",
-        headers: headers, body: form);
-
-    print('Response body: ${response.body}');
+    };
+    Response response;
+    try {
+      response =
+          await Dio().post("http://192.168.43.29:8000/core/login/", data: form);
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('登录失败，请检查用户名和密码是否正确'),
+          duration: Duration(milliseconds: 2000)));
+      return print(e);
+    }
     if (response.statusCode == 200) {
-      var token = response.body;
+      var token = response.data;
       final prefs = await SharedPreferences.getInstance();
       final setTokenResult = await prefs.setString('user_token', token);
       if (setTokenResult) {
@@ -39,10 +39,6 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         debugPrint('保存登录token失败');
       }
-    } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('登录失败，请检查用户名和密码是否正确'),
-          duration: Duration(milliseconds: 2000)));
     }
   }
 

@@ -36,7 +36,7 @@ class FollowView(APIView):
     @staticmethod
     def delete(request):
         """Deletes an existing follow relationship
-        
+
         Parameters
         ----------
         request: json format
@@ -61,7 +61,7 @@ class FollowView(APIView):
         )
 
         """
-            Data containing from_user and to_user
+        Data containing from_user and to_user
         """
         request_user = request.user
         target_user_id = request.data.get('target_user')
@@ -85,8 +85,8 @@ class FollowView(APIView):
         """
         following_people = get_people_user_follows(username)
         return Response(UserSerializer(following_people, many=True).data)
-    
-    
+
+
 class PostRecordView(APIView):
     """
     A class based view for creating Post Record

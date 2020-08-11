@@ -2,7 +2,6 @@
 Views for post and comment APIs
 """
 
-from django.contrib.auth import models as auth_models
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status

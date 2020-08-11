@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 """views.py"""
 
+from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from core.serializers import UserSerializer
-from .serializers import FollowSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows)
@@ -23,19 +23,12 @@ class FollowView(APIView):
         ----------
         request: json format
             Data containing from_user and to_user
-
-        Returns
-        -------
-        response: json format
-            Newly created follow relationship or errors
         """
-        serializer = FollowSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        request_user = request.data.get('from_user')
-        target_user = request.data.get('to_user')
-        relationship = create_follow_relationship(request_user, target_user)
-        return Response(FollowSerializer(relationship).data,
-                        status=status.HTTP_201_CREATED)
+        request_user = request.user
+        target_user_id = request.data.get('target_user')
+        target_user = get_user_model().objects.get(pk=target_user_id)
+        create_follow_relationship(request_user, target_user)
+        return Response(status=status.HTTP_201_CREATED)
 
     @staticmethod
     def delete(request):
@@ -46,8 +39,9 @@ class FollowView(APIView):
         request: json format
             Data containing from_user and to_user
         """
-        request_user = request.data.get('from_user')
-        target_user = request.data.get('to_user')
+        request_user = request.user
+        target_user_id = request.data.get('target_user')
+        target_user = get_user_model().objects.get(pk=target_user_id)
         delete_follow_relationship(request_user, target_user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -40,9 +40,8 @@ def create_follow_relationship(request_user, target_user):
     follow_relationship: The new follow relationship object.
     """
     follow_relationship = FollowRelationship.objects.create(
-        from_user=get_user_model().objects.get(pk=request_user),
-        to_user=get_user_model().objects.get(pk=target_user)
-    )
+        from_user=request_user,
+        to_user=target_user)
     return follow_relationship
 
 

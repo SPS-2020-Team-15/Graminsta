@@ -26,7 +26,7 @@ SECRET_KEY = '&r)j0uf7(4wzdw$h9-dguetx3d@-(&oixmswm%)ikly(w=nu-%'
 DEBUG = True
 
 # Root path for resources uploaded
-MEDIA_ROOT = "img/"
+MEDIA_ROOT = "media/"
 
 ALLOWED_HOSTS = []
 

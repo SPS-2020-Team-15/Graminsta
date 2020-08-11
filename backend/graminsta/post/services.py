@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 from .models import Post
 
 
-def create_post(publisher_id, description, img):
-    """Create or update a Post in datebase.
+def create_post(publisher_id, description, img, mention_user_ids):
+    """Create a Post in datebase.
 
     Parameters
     ----------
@@ -21,17 +21,21 @@ def create_post(publisher_id, description, img):
 
     Returns
     -------
-    post: json format
-        a successfully created post
+    post: a successfully created post object
     """
     # Get publisher object with publisher_name
     publisher = get_user_model().objects.get(pk=publisher_id)
+    print(publisher.id)
     # Get the default image
     post = Post.objects.create(
         publisher=publisher,
         description=description,
         img=img,
-        created_at=datetime.datetime.now()
+        created_at=datetime.datetime.now(),
     )
+
+    user_ids = mention_user_ids.split(",")
+    for user_id in user_ids:
+        post.mention_user.add(get_user_model().objects.get(pk=user_id))
     post.save()
     return post

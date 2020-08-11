@@ -2,6 +2,7 @@
 Views for post and comment APIs
 """
 
+from django.contrib.auth import models as auth_models
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -32,10 +33,12 @@ class PostRecordView(APIView):
         """
 
         # _ is not allowed in header key
+        # TODO: get user from request
         publisher_id = int(request.META.get("HTTP_PUBLISHERID"))
         description = request.data["description"]
         img = request.data["img"]
-        post = create_post(publisher_id, description, img)
+        mention_user_ids = request.data["mention_user_ids"]
+        post = create_post(publisher_id, description, img, mention_user_ids)
         return Response(
             PostSerializer(post).data,
             status=status.HTTP_201_CREATED

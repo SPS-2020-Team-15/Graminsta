@@ -25,7 +25,6 @@ def create_post(publisher_id, description, img, mention_user_ids):
     """
     # Get publisher object with publisher_name
     publisher = get_user_model().objects.get(pk=publisher_id)
-    print(publisher.id)
     # Get the default image
     post = Post.objects.create(
         publisher=publisher,
@@ -35,7 +34,7 @@ def create_post(publisher_id, description, img, mention_user_ids):
     )
 
     user_ids = mention_user_ids.split(",")
-    for user_id in user_ids:
-        post.mention_user.add(get_user_model().objects.get(pk=user_id))
+    users = get_user_model().objects.filter(pk__in=user_ids)
+    post.mention_user.set(users)
     post.save()
     return post

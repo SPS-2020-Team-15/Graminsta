@@ -13,8 +13,8 @@ class Post(models.Model):
     publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE,
                                   related_name="published_posts")
     description = models.TextField()
-    lng = models.FloatField(default=100)
-    lat = models.FloatField(default=100)
+    lon = models.FloatField(blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
     img = models.ImageField(settings.MEDIA_ROOT)
     marked_user = models.ManyToManyField(auth_models.User,
                                          related_name="marking_users")

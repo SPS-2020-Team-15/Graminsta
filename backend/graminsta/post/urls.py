@@ -8,5 +8,5 @@ from .views import PostRecordView
 
 app_name = 'post'
 urlpatterns = [
-    path('create-post/', PostRecordView.as_view(), name='post'),
+    path('', PostRecordView.as_view(), name='post'),
 ]

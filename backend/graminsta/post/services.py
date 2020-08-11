@@ -40,6 +40,7 @@ def create_post(publisher_id, description, img, mention_user_ids):
     post.save()
     return post
 
+
 def get_people_user_follows(username):
     """
     Returns users that the given user follows.

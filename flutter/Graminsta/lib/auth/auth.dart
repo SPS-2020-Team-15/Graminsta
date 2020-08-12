@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/login.dart';
+import 'package:Graminsta/auth/signup.dart';
 import "package:Graminsta/spec/spacing.dart";
 
 class AuthPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       controller: _pageController,
       children: <Widget>[
         LoginPage(),
-        Text("Register"),
+        SignupPage(),
       ],
       onPageChanged: (index) {
         setState(() {
@@ -98,7 +99,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                     curve: Curves.decelerate);
                               },
                               child: Text(
-                                "Register",
+                                "SignUp",
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),

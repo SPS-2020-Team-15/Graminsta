@@ -22,5 +22,4 @@ urlpatterns = [
     path('core/', include('core.urls', namespace='core')),
     path('post/', include('post.urls', namespace='post')),
     path('authtoken/', views.obtain_auth_token, name='authtoken'),
-    path('post/', include('post.urls', namespace='post')),
 ]

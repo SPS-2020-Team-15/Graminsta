@@ -31,7 +31,6 @@ def create_post(publisher_id, description, img, mention_user_ids):
         publisher=publisher,
         description=description,
         img=img,
-        created_at=datetime.datetime.now(),
     )
 
     user_ids = mention_user_ids.split(",")

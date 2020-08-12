@@ -99,7 +99,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                     curve: Curves.decelerate);
                               },
                               child: Text(
-                                "Register",
+                                "SignUp",
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),

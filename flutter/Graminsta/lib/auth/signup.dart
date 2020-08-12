@@ -17,7 +17,7 @@ class _SignupPageState extends State<SignupPage> {
           MaterialButton(
             color: Colors.blue,
             textColor: Colors.white,
-            child: Text('Register'),
+            child: Text('SignUp'),
             onPressed: () {},
           )
         ],

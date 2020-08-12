@@ -62,7 +62,7 @@ def user_authentication(request):
             token = Token.objects.get(user=user)
             token.delete()
             token = Token.objects.create(user=user)
-        except(Exception):
+        except Token.DoesNotExist:
             token = Token.objects.create(user=user)
         return token.key
     return None

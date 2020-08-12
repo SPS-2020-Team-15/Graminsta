@@ -4,12 +4,12 @@
 Services for core module.
 """
 
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate, login
 from .serializers import UserSerializer
 from .serializers import UserInfoSerializer
 from .models import UserInfo
-from django.contrib.auth import authenticate, login
-from rest_framework.authtoken.models import Token
-import json
+
 
 def create_userinfo(validated_data):
     """Create or update a UserInfo in database.
@@ -38,16 +38,31 @@ def create_userinfo(validated_data):
 
 
 def user_authentication(request):
-    request_form = json.loads(request.body)
-    user = authenticate(username=request_form["username"], password=request_form["password"])
+    """User Authentication
+
+    Parameters
+    ----------
+    request: rest_framework.request.Request
+        Request from the frontend
+
+    Returns
+    -------
+    token.key: String format
+        if the authentication passed.
+    None if the authentication failed.
+    """
+    data = request.data
+    user = authenticate(
+        request,
+        username=data.get("username", ""),
+        password=data.get("password", ""))
     if user is not None:
-        login(request, user)        
+        login(request, user)
         try:
             token = Token.objects.get(user=user)
             token.delete()
             token = Token.objects.create(user=user)
-        except:
+        except(Exception):
             token = Token.objects.create(user=user)
         return token.key
-    else:
-        return None
+    return None

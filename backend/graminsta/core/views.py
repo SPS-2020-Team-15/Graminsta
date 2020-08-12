@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .services import create_userinfo, user_authentication
 from .serializers import UserInfoSerializer
-import json
 
 
 class UserInfoRecordView(APIView):
@@ -29,12 +28,11 @@ class UserInfoRecordView(APIView):
         response: json format
             Newly created user_info
         """
-        user_info = create_userinfo(request.data)
+        user_info = create_userinfo(request)
         return Response(
             UserInfoSerializer(user_info).data,
             status=status.HTTP_201_CREATED
         )
-
 
 
 class UserLoginView(APIView):
@@ -43,7 +41,8 @@ class UserLoginView(APIView):
     """
 
     def post(self, request):
-        """
+        """User Authentication
+
         Parameters
         ----------
         request: json format
@@ -51,18 +50,17 @@ class UserLoginView(APIView):
 
         Returns
         -------
-        response: json format
+        response: String format
             return "Login Failed" if authentication does not pass.
             return the anth token if the authentication passes.
         """
         token = user_authentication(request)
-        if (token == None): 
+        if token is None:
             return Response(
                 "Login Failed",
                 status=status.HTTP_404_NOT_FOUND
             )
-        else:
-            return Response(
-                token,
-                status=status.HTTP_200_OK
-            )
+        return Response(
+            token,
+            status=status.HTTP_200_OK
+        )

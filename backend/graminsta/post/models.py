@@ -2,6 +2,7 @@
 """models.py"""
 from django.db import models
 from django.contrib.auth import models as auth_models
+from django.conf import settings
 
 
 class Post(models.Model):
@@ -12,9 +13,13 @@ class Post(models.Model):
     publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE,
                                   related_name="published_posts")
     description = models.TextField()
-    img = models.ImageField(upload_to='img')
+    lon = models.FloatField(blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
+    img = models.ImageField(settings.MEDIA_ROOT)
     marked_user = models.ManyToManyField(auth_models.User,
                                          related_name="marking_users")
+    mention_user = models.ManyToManyField(
+        auth_models.User, related_name="mentioned_by_post")
     created_at = models.DateTimeField(auto_now_add=True)
 
 

@@ -25,6 +25,9 @@ SECRET_KEY = '&r)j0uf7(4wzdw$h9-dguetx3d@-(&oixmswm%)ikly(w=nu-%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Root path for resources uploaded
+MEDIA_ROOT = "media/"
+
 ALLOWED_HOSTS = []
 
 

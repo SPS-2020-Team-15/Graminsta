@@ -13,34 +13,31 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   void login() async {
-    final form = {
+    Response response;
+    HttpManager.post("core/login/", data: {
       "username": _usernameController.text,
       "password": _passwordController.text,
-    };
-    Response response;
-    try {
-      response =
-          await Dio().post("http://192.168.43.29:8000/core/login/", data: form);
-    } catch (e) {
+    }, success: (data) {
+      _setToken(data);
+    }, error: (e) {
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('登录失败，请检查用户名和密码是否正确'),
           duration: Duration(milliseconds: 2000)));
-      return print(e);
-    }
-    if (response.statusCode == 200) {
-      var token = response.data;
-      final prefs = await SharedPreferences.getInstance();
-      final setTokenResult = await prefs.setString('user_token', token);
-      HttpManager.setHeader();
-      if (setTokenResult) {
-        //if set token success, redirect to homepage
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          '/home',
-          (route) => route == null,
-        );
-      } else {
-        debugPrint('保存登录token失败');
-      }
+      print(e);
+    });
+  }
+
+  _setToken(token) async {
+    final prefs = await SharedPreferences.getInstance();
+    final setTokenResult = await prefs.setString('user_token', token);
+    if (setTokenResult) {
+      //if set token success, redirect to homepage
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/home',
+        (route) => route == null,
+      );
+    } else {
+      debugPrint('保存登录token失败');
     }
   }
 

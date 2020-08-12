@@ -17,10 +17,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserInfo',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                    primary_key=True, serialize=False, verbose_name='ID')),
                 ('age', models.PositiveIntegerField()),
-                ('gender', models.IntegerField(choices=[(0, 'Male'), (1, 'Female')])),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('gender', models.IntegerField(
+                    choices=[(0, 'Male'), (1, 'Female')])),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE, 
+                    to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

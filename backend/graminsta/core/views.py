@@ -28,7 +28,7 @@ class UserInfoRecordView(APIView):
         response: json format
             Newly created user_info
         """
-        user_info = create_userinfo(request)
+        user_info = create_userinfo(request.data)
         return Response(
             UserInfoSerializer(user_info).data,
             status=status.HTTP_201_CREATED

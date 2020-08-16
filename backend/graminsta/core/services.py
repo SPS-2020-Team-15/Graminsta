@@ -59,6 +59,5 @@ def create_authentication_token(data):
             Token.objects.get(user=user).delete()
         except Token.DoesNotExist:
             pass
-        finally:
-            return Token.objects.create(user=user)
+        return Token.objects.create(user=user)
     return None

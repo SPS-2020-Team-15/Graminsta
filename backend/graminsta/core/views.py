@@ -6,7 +6,7 @@ Register and Login.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import create_userinfo, user_authentication
+from .services import create_userinfo, create_authentication_token
 from .serializers import UserInfoSerializer
 
 
@@ -50,17 +50,17 @@ class UserLoginView(APIView):
 
         Returns
         -------
-        response: String format
-            return "Login Failed" if authentication does not pass.
-            return the anth token if the authentication passes.
+        response: json format
+            return "Login Failed" if authentication failed.
+            return the token if the authentication passed.
         """
-        token = user_authentication(request)
+        token = create_authentication_token(request.data)
         if token is None:
             return Response(
                 "Login Failed",
                 status=status.HTTP_404_NOT_FOUND
             )
         return Response(
-            token,
+            {"token": token.key},
             status=status.HTTP_200_OK
         )

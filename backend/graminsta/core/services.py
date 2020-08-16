@@ -5,7 +5,7 @@ Services for core module.
 """
 
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 from .serializers import UserInfoSerializer
 from .models import UserInfo
@@ -37,32 +37,28 @@ def create_userinfo(validated_data):
     return user_info
 
 
-def user_authentication(request):
+def create_authentication_token(data):
     """User Authentication
 
     Parameters
     ----------
-    request: rest_framework.request.Request
-        Request from the frontend
+    data: json format
+        Data containing username and password
 
     Returns
     -------
-    token.key: String format
+    token: Token
         if the authentication passed.
     None if the authentication failed.
     """
-    data = request.data
     user = authenticate(
-        request,
         username=data.get("username", ""),
         password=data.get("password", ""))
     if user is not None:
-        login(request, user)
         try:
-            token = Token.objects.get(user=user)
-            token.delete()
-            token = Token.objects.create(user=user)
+            Token.objects.get(user=user).delete()
         except Token.DoesNotExist:
-            token = Token.objects.create(user=user)
-        return token.key
+            pass
+        finally:
+            return Token.objects.create(user=user)
     return None

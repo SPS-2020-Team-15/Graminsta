@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:Graminsta/http.dart';
-import 'package:dio/dio.dart';
+import 'package:Graminsta/auth_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,36 +8,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void login() async {
-    Response response;
-    HttpManager.post("core/login/", data: {
-      "username": _usernameController.text,
-      "password": _passwordController.text,
-    }, success: (data) {
-      _setToken(data);
-    }, error: (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('登录失败，请检查用户名和密码是否正确'),
-          duration: Duration(milliseconds: 2000)));
-      print(e);
-    });
-  }
-
-  _setToken(token) async {
-    final prefs = await SharedPreferences.getInstance();
-    final setTokenResult = await prefs.setString('user_token', token);
-    if (setTokenResult) {
-      //if set token success, redirect to homepage
+  void _login() async {
+    AuthService.logIn(_usernameController.text, _passwordController.text,
+        success: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/home',
         (route) => route == null,
       );
-    } else {
-      debugPrint('保存登录token失败');
-    }
+    }, error: () {
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('登录失败，请检查用户名和密码是否正确'),
+          duration: Duration(milliseconds: 2000)));
+    });
   }
 
   @override
@@ -53,7 +38,9 @@ class _LoginPageState extends State<LoginPage> {
             textColor: Colors.white,
             child: Text('Login'),
             onPressed: () {
-              login();
+              if (_formKey.currentState.validate()) {
+                _login();
+              }
             },
           ),
         ],
@@ -66,12 +53,19 @@ class _LoginPageState extends State<LoginPage> {
       width: 300,
       height: 120,
       child: Form(
+        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Flexible(
               child: TextFormField(
                 controller: _usernameController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter username';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.person,
@@ -84,6 +78,12 @@ class _LoginPageState extends State<LoginPage> {
             Flexible(
               child: TextFormField(
                 controller: _passwordController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.lock,

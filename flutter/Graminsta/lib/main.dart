@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Graminsta/http_service.dart';
 
 
 void main() => runApp(MyApp());
@@ -49,8 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   void _logout() async {
     //clear SharedPreferences and redirect to AuthPage.
-    final prefs = await SharedPreferences.getInstance();
-    final result = await prefs.clear();
+    final result = await http.clearAuthToken();
     if (result) {
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/auth',

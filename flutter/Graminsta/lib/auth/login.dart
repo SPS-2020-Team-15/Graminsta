@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth_service.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -13,17 +12,20 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   void _login() async {
-    AuthService.logIn(_usernameController.text, _passwordController.text,
-        success: () {
+    final isLoggedIn = await AuthService.logIn(
+      _usernameController.text,
+      _passwordController.text,
+    );
+    if (isLoggedIn) {
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/home',
         (route) => route == null,
       );
-    }, error: () {
+    } else {
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('登录失败，请检查用户名和密码是否正确'),
           duration: Duration(milliseconds: 2000)));
-    });
+    }
   }
 
   @override

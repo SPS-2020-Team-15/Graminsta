@@ -9,7 +9,7 @@ import 'package:Graminsta/constants.dart';
 class _HttpService {
   static _HttpService _instance;
 
-  final globalHeaders = Map<String, String>();
+  var _globalHeaders = Map<String, String>();
 
   factory _HttpService() {
     _instance ??= _HttpService._();
@@ -19,49 +19,53 @@ class _HttpService {
   _HttpService._();
 
   // Set the auth token for authentication.
-  Future<void> setAuthToken(String token, {Function success}) async {
+  Future<bool> setAuthToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     final setTokenResult = await prefs.setString(userTokenKey, token);
     if (setTokenResult) {
-      if (success != null) {
-        success();
-      }
-    } else {
-      debugPrint('保存登录token失败');
+      _globalHeaders["Authorization"] = "Token " + token;
+      return true;
     }
+    return false;
   }
 
-  Future<baseHttp.Response> get(String url,
-      {Map<String, String> headers}) async {
-    baseHttp.Response response;
-    Map<String, dynamic> headersMap = headers == null ? new Map() : headers;
-    url = baseUrl + url;
+  Future<bool> clearAuthToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(userTokenKey) ?? '';
-    if (token != "") {
-      headersMap.addAll({"token": token});
+    final result = await prefs.clear();
+    if (result) {
+      _globalHeaders.clear();
+      return true;
     }
+    return false;
+  }
+
+  Future<baseHttp.Response> get(
+    String url, {
+    Map<String, String> headers,
+  }) async {
+    baseHttp.Response response;
+    Map<String, String> headersMap = headers == null ? new Map() : headers;
+    headersMap.addAll(_globalHeaders);
     try {
-      response = await get(url, headers: headersMap);
+      response = await baseHttp.get("$baseUrl$url", headers: headersMap);
     } catch (e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     }
     return response;
   }
 
-  Future<baseHttp.Response> post(String url,
-      {Map<String, String> headers, Object body, Encoding encoding}) async {
+  Future<baseHttp.Response> post(
+    String url, {
+    Map<String, String> headers,
+    Object body,
+    Encoding encoding,
+  }) async {
     baseHttp.Response response;
     Map<String, String> headersMap = headers == null ? new Map() : headers;
     Map<String, String> dataMap = body == null ? new Map() : body;
-    url = baseUrl + url;
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(userTokenKey) ?? '';
-    if (token != "") {
-      headersMap.addAll({"token": token});
-    }
+    headersMap.addAll(_globalHeaders);
     try {
-      response = await baseHttp.post(url,
+      response = await baseHttp.post("$baseUrl$url",
           headers: headersMap,
           body: dataMap,
           encoding: encoding ??= Utf8Codec());

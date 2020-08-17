@@ -58,7 +58,7 @@ class UserLoginView(APIView):
         if token is None:
             return Response(
                 "Login Failed",
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_401_UNAUTHORIZED
             )
         return Response(
             {"token": token.key},

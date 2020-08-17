@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:Graminsta/http_service.dart';
-import 'package:flutter/cupertino.dart';
 
 class AuthService {
   static AuthService _instance;
@@ -13,18 +11,18 @@ class AuthService {
 
   AuthService._();
 
-  static Future<void> logIn(String username, String password,
-      {Function success, Function error}) {
-    http.post("core/login/",
-        body: {"username": username, "password": password}).then((res) {
-      if (res.statusCode == 200) {
-        Map<String, Object> map = jsonDecode(res.body);
-        http.setAuthToken(map["token"], success: success);
-      } else {
-        error();
-      }
-    }).catchError((e) {
-      debugPrint(e);
+  static Future<bool> logIn(String username, String password) async {
+    final res = await http.post("core/login/", body: {
+      "username": username,
+      "password": password,
     });
+    if (res.statusCode == 200) {
+      Map<String, Object> map = jsonDecode(res.body);
+      final isTokenSet = await http.setAuthToken(map["token"]);
+      if (isTokenSet) {
+        return true;
+      }
+    }
+    return false;
   }
 }

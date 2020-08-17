@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:Graminsta/http_service.dart';
+import 'package:Graminsta/serviece/http_service.dart';
 
 class AuthService {
   static AuthService _instance;

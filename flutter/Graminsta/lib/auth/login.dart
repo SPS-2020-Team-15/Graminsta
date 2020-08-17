@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Graminsta/auth_service.dart';
+import 'package:Graminsta/serviece/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override

@@ -57,18 +57,19 @@ class _HttpService {
   Future<baseHttp.Response> post(
     String url, {
     Map<String, String> headers,
-    Object body,
+    Object body = const {},
     Encoding encoding,
   }) async {
     baseHttp.Response response;
     Map<String, String> headersMap = headers == null ? new Map() : headers;
-    Map<String, String> dataMap = body == null ? new Map() : body;
     headersMap.addAll(_globalHeaders);
     try {
-      response = await baseHttp.post("$baseUrl$url",
-          headers: headersMap,
-          body: dataMap,
-          encoding: encoding ??= Utf8Codec());
+      response = await baseHttp.post(
+        "$baseUrl$url",
+        headers: headersMap,
+        body: body,
+        encoding: encoding ??= Utf8Codec(),
+      );
     } catch (e) {
       debugPrint(e.toString());
     }

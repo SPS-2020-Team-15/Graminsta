@@ -44,10 +44,10 @@ class _HttpService {
     Map<String, String> headers,
   }) async {
     baseHttp.Response response;
-    Map<String, String> headersMap = headers == null ? new Map() : headers;
-    headersMap.addAll(_globalHeaders);
+    headers ??= <String, String>{};
+    headers.addAll(_globalHeaders);
     try {
-      response = await baseHttp.get("$baseUrl$url", headers: headersMap);
+      response = await baseHttp.get("$baseUrl$url", headers: headers);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -61,12 +61,12 @@ class _HttpService {
     Encoding encoding,
   }) async {
     baseHttp.Response response;
-    Map<String, String> headersMap = headers == null ? new Map() : headers;
-    headersMap.addAll(_globalHeaders);
+    headers ??= <String, String>{};
+    headers.addAll(_globalHeaders);
     try {
       response = await baseHttp.post(
         "$baseUrl$url",
-        headers: headersMap,
+        headers: headers,
         body: body,
         encoding: encoding ??= Utf8Codec(),
       );

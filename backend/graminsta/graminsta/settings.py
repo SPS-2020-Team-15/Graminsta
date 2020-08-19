@@ -28,8 +28,7 @@ DEBUG = True
 # Root path for resources uploaded
 MEDIA_ROOT = "media/"
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 

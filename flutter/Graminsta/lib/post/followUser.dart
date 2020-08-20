@@ -1,37 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Graminsta/service/http_service.dart';
-import 'package:Graminsta/service/follow_service.dart';
 import 'package:Graminsta/models/user.dart';
-
-Future<List<User>> fetchUsers() async{
-  final response = await http.get("core/user/");
-  if (response.statusCode == 200) {
-    var responseJson = json.decode(response.body);
-    debugPrint(response.body);
-    return (responseJson as List)
-        .map((p) => User.fromJson(p))
-        .toList();
-  } else {
-    throw Exception('Failed to load users');
-  }
-}
-
-//TODO: use this function to initialize _followed
-Future<Set<int>> fetchFollowingUsers(int id) async{
-  final response = await http.get("post/user/" + id.toString() + '/');
-  if (response.statusCode == 200) {
-    var responseJson = json.decode(response.body);
-    debugPrint(response.body);
-    return (responseJson as List)
-        .map((p) => User.fromJson(p).id)
-        .toSet();
-  } else {
-    throw Exception('Failed to load following people');
-  }
-}
+import 'package:Graminsta/post/follow_service.dart';
+import 'package:Graminsta/post/user_service.dart';
 
 
 class UsersListState extends State<UsersList> {
@@ -43,7 +14,7 @@ class UsersListState extends State<UsersList> {
     final alreadyFollowed = _followed.contains(_users[index].id);
     return ListTile(
       title: Text(_users[index].username),
-      subtitle: Text(_users[index].firstName + ' ' + _users[index].lastName),
+      subtitle: Text('${_users[index].firstName} ${_users[index].lastName}'),
       trailing: FlatButton.icon(
         icon: Icon(Icons.add),
         label: Text('Follow'),

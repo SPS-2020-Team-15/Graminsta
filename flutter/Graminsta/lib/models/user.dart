@@ -1,3 +1,4 @@
+/// A frontend model object that represents a User.
 class User {
   final int id;
   final String username;
@@ -6,7 +7,7 @@ class User {
 
   User({this.id, this.username, this.firstName, this.lastName});
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, Object> json) {
     return
       User(
         id: json['id'],

@@ -49,20 +49,21 @@ class FollowView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @staticmethod
-    def get(request, username):
+    def get(request, user_id):
         """Gets the given user's following people
 
         Parameters
         ----------
         request: GET request
-        username: str
+        user_id: int
 
         Returns
         -------
         response: json format
             Users that follows the given user
         """
-        following_people = get_people_user_follows(username)
+        user = get_user_model().objects.get(pk=user_id)
+        following_people = get_people_user_follows(user)
         return Response(UserSerializer(following_people, many=True).data)
 
 

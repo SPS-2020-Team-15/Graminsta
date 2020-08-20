@@ -7,8 +7,9 @@ from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import create_userinfo
+
 from .serializers import UserSerializer, UserInfoSerializer
+from .services import create_userinfo, create_authentication_token
 
 
 class UserInfoRecordView(APIView):
@@ -49,3 +50,34 @@ class UserInfoRecordView(APIView):
         """
         users = get_user_model().objects.all()
         return Response(UserSerializer(users, many=True).data)
+
+
+class UserLoginView(APIView):
+    """
+    A class based view for User Login.
+    """
+
+    def post(self, request):
+        """User Authentication
+
+        Parameters
+        ----------
+        request: json format
+            Data containing request information, or None.
+
+        Returns
+        -------
+        response: json format
+            return "Login Failed" if authentication failed.
+            return the token if the authentication passed.
+        """
+        token = create_authentication_token(request.data)
+        if token is None:
+            return Response(
+                "Login Failed",
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        return Response(
+            {"token": token.key},
+            status=status.HTTP_200_OK
+        )

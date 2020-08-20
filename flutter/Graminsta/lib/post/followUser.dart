@@ -35,7 +35,7 @@ Future<Set<int>> fetchFollowingUsers(int id) async{
 
 
 class UsersListState extends State<UsersList> {
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<User> _users = List<User>();
   Set<int> _followed = Set<int>();
 
@@ -55,7 +55,8 @@ class UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      key: _scaffoldKey,
+      appBar: AppBar(
           title: Text('Users'),
         ),
         body: FutureBuilder(
@@ -85,7 +86,7 @@ class UsersListState extends State<UsersList> {
     if (followed) {
       setState(() {});//refresh the current page
     } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text('Unable to follow'),
           duration: Duration(milliseconds: 2000)));
     }

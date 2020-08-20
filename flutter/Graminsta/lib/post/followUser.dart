@@ -64,7 +64,10 @@ class UsersListState extends State<UsersList> {
           builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
             if (snapshot.hasData) {
               _users = snapshot.data;
-              return ListView.builder(
+              return ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  color: Colors.grey,
+                ),
                 itemCount: _users.length,
                 itemBuilder: _buildItemsForListView,
               );

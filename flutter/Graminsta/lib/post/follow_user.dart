@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:Graminsta/models/user.dart';
 import 'package:Graminsta/post/follow_service.dart';
-import 'package:Graminsta/post/user_service.dart';
+import 'package:Graminsta/core/user_service.dart';
 
 
 class UsersListState extends State<UsersList> {

@@ -53,7 +53,7 @@ def get_all_username():
         all_users_name.append(user.username)
     return separator.join(all_users_name)
 
-  
+
 def create_authentication_token(data):
     """User Authentication
 

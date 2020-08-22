@@ -6,7 +6,8 @@ Register and Login.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import create_userinfo, get_all_username, create_authentication_token
+from .services import create_userinfo, get_all_username, \
+    create_authentication_token
 from .serializers import UserInfoSerializer
 
 
@@ -50,8 +51,9 @@ class UserInfoRecordView(APIView):
         username = get_all_username()
         return Response(
             username,
+            status=status.HTTP_200_OK)
 
-          
+
 class UserLoginView(APIView):
     """
     A class based view for User Login.

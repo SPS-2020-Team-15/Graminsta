@@ -4,9 +4,8 @@
 Services for core module.
 """
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 from .serializers import UserInfoSerializer
 from .models import UserInfo

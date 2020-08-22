@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'package:Graminsta/post/mentionUserWidget.dart';
 import 'package:flutter/material.dart';
 
 enum AccessControlType {
@@ -33,6 +35,15 @@ class CreatePostWidget extends StatefulWidget {
 
 class _CreatePostWidgetState extends State<CreatePostWidget> {
   AccessControlType accessControl = AccessControlType.public;
+  final myController = TextEditingController();
+  String mentionedUser = "";
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,25 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 Icons.save,
                 color: Colors.white,
               ),
-              onPressed: () {})
+              onPressed: () async {
+                final http.Response response = await http.post(
+                    "http://10.0.2.2:8000/post/",
+                    headers: <String, String>{
+                      "PublisherId": "1",
+                      "SharedMode": accessControl.toHumanReadableString(),
+                    },
+                    body: {
+                      "description": myController.text,
+                      "mention_usernames": mentionedUser,
+                      "img": "this is my img",
+                    });
+
+                if (response.statusCode == 201) {
+                  print(response.body);
+                } else {
+                  throw Exception('Failed to createPost');
+                }
+              })
         ],
       ),
       body: new Column(
@@ -57,6 +86,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
             margin: EdgeInsets.all(8.0),
             padding: EdgeInsets.only(bottom: 40.0),
             child: TextField(
+              controller: myController,
               maxLines: 5,
               decoration: InputDecoration(
                 hintText: "Describe your post",
@@ -86,11 +116,22 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                   trailing: Icon(Icons.arrow_right, size: 30),
                 ),
                 new ListTile(
-                  leading: const Icon(Icons.alternate_email),
-                  title: Text("Mention"),
-                  trailing: Icon(Icons.arrow_right, size: 30),
-                ),
-                ListTile(
+                    leading: const Icon(Icons.alternate_email),
+                    title: Text('Mention:                 ' + mentionedUser),
+                    trailing: IconButton(
+                        icon: Icon(Icons.arrow_right, size: 30),
+                        iconSize: 48,
+                        onPressed: () async {
+                          String result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MentionUserWidget()));
+                          setState(() {
+                            print(mentionedUser);
+                            mentionedUser = result.replaceAll('"', '');
+                          });
+                        })),
+                new ListTile(
                   leading: const Icon(Icons.person),
                   title: Text("Share With"),
                   trailing: DropdownButton<AccessControlType>(

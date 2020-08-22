@@ -1,17 +1,18 @@
 # -*- coding: UTF-8 -*-
 """views.py"""
 
+import json
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from core.serializers import UserSerializer
 from .serializers import PostSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows,
-                       create_post)
+                       create_post, get_all_post)
 
 
 class FollowView(APIView):
@@ -70,7 +71,7 @@ class PostRecordView(APIView):
     """
     A class based view for creating Post Record
     """
-    parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
         """
@@ -90,11 +91,33 @@ class PostRecordView(APIView):
         # _ is not allowed in header key
         # TODO: get user from request
         publisher_id = int(request.META.get("HTTP_PUBLISHERID"))
+        shared_mode = request.META.get("HTTP_SHAREDMODE")
         description = request.data["description"]
         img = request.data["img"]
-        mention_user_ids = request.data["mention_user_ids"]
-        post = create_post(publisher_id, description, img, mention_user_ids)
+
+        mention_user = request.data["mention_usernames"]
+        post = create_post(publisher_id, description,
+                           img, mention_user, shared_mode)
         return Response(
             PostSerializer(post).data,
+            status=status.HTTP_201_CREATED
+        )
+
+    def get(self, request):
+        """
+        Get All posts
+
+        Returns
+        ------------
+        response: json format
+            All posts
+        """
+        posts = get_all_post()
+        body = ""
+        for post in posts:
+            body += json.dumps(PostSerializer(post).data)
+
+        return Response(
+            body,
             status=status.HTTP_201_CREATED
         )

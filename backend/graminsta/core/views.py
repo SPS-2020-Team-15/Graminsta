@@ -6,7 +6,7 @@ Register and Login.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .services import create_userinfo
+from .services import create_userinfo, get_all_username
 from .serializers import UserInfoSerializer
 
 
@@ -32,4 +32,23 @@ class UserInfoRecordView(APIView):
         return Response(
             UserInfoSerializer(user_info).data,
             status=status.HTTP_201_CREATED
+        )
+
+    def get(self, request):
+        """Get username based on request's requirements
+
+        Parameters
+        --------------
+        request: json format
+            Data containing request information, or None
+
+        Returns
+        --------------
+        response: json format
+            username of all users that satisfy the requirements
+        """
+        username = get_all_username()
+        return Response(
+            username,
+            status=status.HTTP_200_OK
         )

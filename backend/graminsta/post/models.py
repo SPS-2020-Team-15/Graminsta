@@ -21,6 +21,7 @@ class Post(models.Model):
     mention_user = models.ManyToManyField(
         auth_models.User, related_name="mentioned_by_post")
     created_at = models.DateTimeField(auto_now_add=True)
+    shared_mode = models.TextField()
 
 
 class Comment(models.Model):

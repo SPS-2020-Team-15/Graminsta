@@ -52,7 +52,7 @@ class _MentionUserWidgetState extends State<MentionUserWidget> {
 
                 List<Widget> widgets = [];
                 for (int i = 0; i < allNames.length; ++i) {
-                  String name = allNames[i];
+                  String name = allNames[i].replaceAll('"', '');
                   userIcons.add(Icons.panorama_fish_eye);
 
                   widgets.add(new ListTile(

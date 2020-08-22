@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Graminsta",
-      initialRoute: '/home',
+      initialRoute: '/create',
       routes: {
-        '/home': (context) => CreatePostWidget(),
+        '/create': (context) => CreatePostWidget(),
         '/mention': (context) => MentionUserWidget(),
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),

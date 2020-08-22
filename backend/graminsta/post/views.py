@@ -5,13 +5,14 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from core.serializers import UserSerializer
 from .serializers import PostSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows,
-                       create_post)
+                       create_post,
+                       get_all_personal_post)
 
 
 class FollowView(APIView):
@@ -70,7 +71,7 @@ class PostRecordView(APIView):
     """
     A class based view for creating Post Record
     """
-    parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
         """
@@ -97,4 +98,29 @@ class PostRecordView(APIView):
         return Response(
             PostSerializer(post).data,
             status=status.HTTP_201_CREATED
+        )
+
+class PersonalGalleryView(APIView):
+    """
+    A class based view for viewing all personal posts
+    """
+
+    def get(self, request):
+        """
+        Get all personal post
+
+        Parameters
+        ----------
+        Returns
+        ----------
+        response: json format
+            List of all personal posts
+        """
+        posts = get_all_personal_post(request.user)
+        result = []
+        for post in posts:
+            result.append(PostSerializer(post).data)
+        return Response(
+            result,
+            status=status.HTTP_200_OK
         )

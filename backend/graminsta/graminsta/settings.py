@@ -30,7 +30,6 @@ MEDIA_ROOT = "media/"
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [

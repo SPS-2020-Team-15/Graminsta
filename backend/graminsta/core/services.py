@@ -5,6 +5,8 @@ Services for core module.
 """
 
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 from .serializers import UserInfoSerializer
 from .models import UserInfo
@@ -50,3 +52,29 @@ def get_all_username():
     for user in all_users:
         all_users_name.append(user.username)
     return separator.join(all_users_name)
+
+  
+def create_authentication_token(data):
+    """User Authentication
+
+    Parameters
+    ----------
+    data: json format
+        Data containing username and password
+
+    Returns
+    -------
+    token: Token
+        if the authentication passed.
+    None if the authentication failed.
+    """
+    user = authenticate(
+        username=data.get("username", ""),
+        password=data.get("password", ""))
+    if user is not None:
+        try:
+            Token.objects.get(user=user).delete()
+        except Token.DoesNotExist:
+            pass
+        return Token.objects.create(user=user)
+    return None

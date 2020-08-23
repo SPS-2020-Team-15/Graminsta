@@ -17,9 +17,9 @@ extension AccessControlTypeExtension on AccessControlType {
       case AccessControlType.private:
         return "Private";
       case AccessControlType.visibleToSpecificFriends:
-        return "Visible to specfic friends";
+        return "Visible to specific friends";
       case AccessControlType.invisibleToSpecificFriends:
-        return "Invisible to specfic friends";
+        return "Invisible to specific friends";
       default:
         return null;
     }
@@ -49,6 +49,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    String mentionUserTitle = "Mention:";
 
     return new Scaffold(
       appBar: AppBar(
@@ -62,19 +63,16 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
               onPressed: () async {
                 final http.Response response = await http.post(
                     "http://10.0.2.2:8000/post/",
-                    headers: <String, String>{
-                      "PublisherId": "1",
-                      "SharedMode": accessControl.toHumanReadableString(),
-                    },
+                    headers: <String, String>{},
                     body: {
+                      "publisher_id": "1",
                       "description": myController.text,
                       "mention_usernames": mentionedUser,
                       "img": "this is my img",
+                      "shared_mode": accessControl.toHumanReadableString()
                     });
 
-                if (response.statusCode == 201) {
-                  print(response.body);
-                } else {
+                if (response.statusCode != 201) {
                   throw Exception('Failed to createPost');
                 }
               })
@@ -117,17 +115,19 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 ),
                 new ListTile(
                     leading: const Icon(Icons.alternate_email),
-                    title: Text('Mention:                 ' + mentionedUser),
+                    title: Text(
+                        mentionUserTitle.padRight(10, ' ') + mentionedUser),
                     trailing: IconButton(
                         icon: Icon(Icons.arrow_right, size: 30),
                         iconSize: 48,
                         onPressed: () async {
                           String result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MentionUserWidget()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MentionUserWidget(),
+                            ),
+                          );
                           setState(() {
-                            print(mentionedUser);
                             mentionedUser = result.replaceAll('"', '');
                           });
                         })),

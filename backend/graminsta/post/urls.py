@@ -11,4 +11,4 @@ app_name = 'post'
 urlpatterns = [
     path('', PostRecordView.as_view(), name='post'),
     path('follow/', FollowView.as_view(), name='follow'),
-    path('follow/<username>/', FollowView.as_view(), name='following_people')]
+    path('follow/<user_id>/', FollowView.as_view(), name='following_people')]

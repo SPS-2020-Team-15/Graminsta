@@ -17,10 +17,17 @@ class Post(models.Model):
     lat = models.FloatField(blank=True, null=True)
     img = models.ImageField(settings.MEDIA_ROOT)
     marked_user = models.ManyToManyField(auth_models.User,
-                                         related_name="marking_users")
-    mention_user = models.ManyToManyField(
-        auth_models.User, related_name="mentioned_by_post")
+                                         related_name="marking_users",
+                                         blank=True)
+    mention_user = models.ManyToManyField(auth_models.User,
+                                          related_name="mentioned_by_post",
+                                          blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    kudos = models.IntegerField(default=0)
+
+    def __str__(self):
+        return '%s: %s' % (self.publisher.username,
+                           self.description)
 
 
 class Comment(models.Model):

@@ -40,20 +40,19 @@ def create_post(publisher_id, description, img, mention_user_ids):
     return post
 
 
-def get_people_user_follows(username):
+def get_people_user_follows(user):
     """
     Returns users that the given user follows.
 
     Parameters
     ------------
-    username: str
+    user: The user whose following people will be returned.
 
     Returns
     -------
     follow_people: The QuerySet contains users that the
         given user follows.
     """
-    user = get_user_model().objects.get(username=username)
     ids = FollowRelationship.objects.filter(from_user=user) \
         .values_list('to_user_id', flat=True)
     following_people = get_user_model().objects.filter(id__in=ids)

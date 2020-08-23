@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         """
         model = auth_models.User
         fields = (
+            'id',
             'username',
             'first_name',
             'last_name',

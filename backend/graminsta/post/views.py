@@ -107,5 +107,16 @@ class TimelineView(APIView):
     """
     @staticmethod
     def get(request):
+        """Gets the given user's timeline
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format Posts that should be
+            displayed at the given user's timeline
+        """
         posts = get_timeline_posts(request.user)
         return Response(PostSerializer(posts, many=True).data)

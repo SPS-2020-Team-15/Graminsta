@@ -18,10 +18,10 @@ class Post(models.Model):
     img = models.ImageField(settings.MEDIA_ROOT)
     marked_user = models.ManyToManyField(auth_models.User,
                                          related_name="marking_users",
-                                         blank=True)
+                                         blank=True, null=True)
     mention_user = models.ManyToManyField(auth_models.User,
                                           related_name="mentioned_by_post",
-                                          blank=True)
+                                          blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     kudos = models.IntegerField(default=0)
 

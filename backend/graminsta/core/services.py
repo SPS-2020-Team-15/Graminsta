@@ -27,13 +27,7 @@ def create_userinfo(validated_data):
     userinfo_serializer = UserInfoSerializer(data=validated_data)
     userinfo_serializer.is_valid(raise_exception=True)
     user_data = validated_data.pop('user')
-    user = auth_models.User.objects.create_user(
-        username=user_data["username"],
-        first_name=user_data["first_name"],
-        last_name=user_data["last_name"],
-        email=user_data["email"],
-        password=user_data["password"],
-    )
+    user = auth_models.User.objects.create_user(**user_data)
     user_info = UserInfo.objects.create(
         user=user,
         age=validated_data.pop('age'),

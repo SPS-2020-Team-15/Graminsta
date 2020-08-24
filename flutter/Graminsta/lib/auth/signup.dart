@@ -22,9 +22,7 @@ class _SignupPageState extends State<SignupPage> {
 
   void _signup() async {
     String password1 = _passwordController.text;
-    debugPrint(password1);
     String password2 = _passwordAgainController.text;
-    debugPrint(password2);
     if (password1 != password2) {
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text('Two passwords are not same'),
@@ -44,22 +42,22 @@ class _SignupPageState extends State<SignupPage> {
     int age = int.parse(_ageController.text);
     UserInfo userInfo = UserInfo(user: user, gender: gender, age: age);
 
-    final mess = await AuthService.signUp(userInfo);
-    if (mess["status"] == "success") {
+    final response = await AuthService.signUp(userInfo);
+    if (response['status'] == 'success') {
       Navigator.of(context).pushNamedAndRemoveUntil(
         '/auth',
         (route) => route == null,
       );
-    } else if (mess["status"] == 'fail') {
+    } else if (response['status'] == 'fail') {
       String errMessage = 'FAILED!\n';
-      if (mess.containsKey("user")) {
-        mess["user"].forEach((k, v) => errMessage = errMessage + k + ':' + v[0] + "\n");
+      if (response.containsKey('user')) {
+        response['user'].forEach((k, v) => errMessage = errMessage + k + ':' + v[0] + '\n');
       }
-      if (mess.containsKey("gender")) {
-        errMessage = errMessage + 'gender:' + mess["gender"][0] + '\n';
+      if (response.containsKey('gender')) {
+        errMessage = errMessage + 'gender:' + response['gender'][0] + '\n';
       }
-      if (mess.containsKey("age")) {
-        errMessage = errMessage + 'age:' + mess["age"][0] + '\n';
+      if (response.containsKey('age')) {
+        errMessage = errMessage + 'age:' + response['age'][0] + '\n';
       }
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(errMessage), duration: Duration(milliseconds: 3000)));

@@ -11,7 +11,6 @@ Future<List<User>> fetchUsers() async {
   Set<int> followingPeople;
   if (followResponse.statusCode == 200) {
     var responseJson = json.decode(followResponse.body);
-    debugPrint(followResponse.body);
     followingPeople = (responseJson as List)
         .map<int>((p) => p['id'])
         .toSet();
@@ -22,7 +21,6 @@ Future<List<User>> fetchUsers() async {
   final response = await http.get("core/user/");
   if (response.statusCode == 200) {
     var responseJson = json.decode(response.body);
-    debugPrint(response.body);
     return (responseJson as List)
         .map((p) => User.fromJson(p, followingPeople))
         .toList();

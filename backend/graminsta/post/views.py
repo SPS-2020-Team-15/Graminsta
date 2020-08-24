@@ -16,7 +16,7 @@ from .services import (create_follow_relationship,
 
 class FollowView(APIView):
     """
-    A class based view to manage follow relationship.
+    A class based view to create and look up follow relationship.
     """
     @staticmethod
     def post(request):
@@ -51,6 +51,9 @@ class FollowView(APIView):
 
 
 class UnfollowView(APIView):
+    """
+    A class based view to delete follow relationship.
+    """
     @staticmethod
     def post(request):
         """Deletes an existing follow relationship
@@ -68,6 +71,9 @@ class UnfollowView(APIView):
 
 
 class FollowingView(APIView):
+    """
+    A class based view to get any specific user's following people.
+    """
     @staticmethod
     def get(request, user_id):
         """Gets the given user's following people

@@ -6,8 +6,7 @@ Services for core module.
 
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from django.contrib.auth import models as auth_models
 from .serializers import UserInfoSerializer
 from .models import UserInfo
 
@@ -28,7 +27,7 @@ def create_userinfo(validated_data):
     userinfo_serializer = UserInfoSerializer(data=validated_data)
     userinfo_serializer.is_valid(raise_exception=True)
     user_data = validated_data.pop('user')
-    user = User.objects.create_user(
+    user = auth_models.User.objects.create_user(
         username=user_data["username"],
         first_name=user_data["first_name"],
         last_name=user_data["last_name"],
@@ -60,7 +59,6 @@ def create_authentication_token(data):
     user = authenticate(
         username=data.get("username", ""),
         password=data.get("password", ""))
-    print (user)
     if user is not None:
         try:
             Token.objects.get(user=user).delete()

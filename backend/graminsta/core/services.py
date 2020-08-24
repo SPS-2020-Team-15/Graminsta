@@ -61,3 +61,19 @@ def create_authentication_token(data):
             pass
         return Token.objects.create(user=user)
     return None
+
+def get_user_info(user):
+    """Get User Info from the database.
+
+    Parameters
+    ----------
+    data: user
+        A User Object
+
+    Returns
+    -------
+    user_info: UserInfo
+        A UserInfo Object
+    """
+    user_info = UserInfo.objects.get(user=user)
+    return user_info

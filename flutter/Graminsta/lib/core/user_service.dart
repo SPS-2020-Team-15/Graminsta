@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:Graminsta/models/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:Graminsta/service/http_service.dart';
@@ -18,6 +19,18 @@ Future<List<User>> fetchUsers() async {
     throw Exception('Failed to load users');
   }
 }
+
+Future<UserInfo> getUserInfo() async {
+  final response = await http.get("core/info/");
+  if (response.statusCode == 200) {
+    var responseJson = json.decode(response.body);
+    debugPrint(response.body);
+    return UserInfo.fromJson(responseJson);
+  } else {
+    throw Exception('Failed to load user info');
+  }
+}
+
 
 ///A function that returns a set of users that the given user follows
 ///TODO: use this function to initialize _followed

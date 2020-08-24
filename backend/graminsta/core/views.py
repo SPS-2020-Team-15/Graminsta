@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import UserSerializer, UserInfoSerializer
-from .services import create_userinfo, create_authentication_token
+from .services import create_userinfo, create_authentication_token, get_user_info
 
 
 class UserInfoRecordView(APIView):
@@ -81,3 +81,23 @@ class UserLoginView(APIView):
             {"token": token.key},
             status=status.HTTP_200_OK
         )
+
+class UserInfoView(APIView):
+    """
+    A class based view for User Info.
+    """
+
+    def get(self, request):
+        """Get the UserInfo of the request user.
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format user_info
+        """
+        user_info = get_user_info(request.user)
+        return Response(UserInfoSerializer(user_info).data)
+

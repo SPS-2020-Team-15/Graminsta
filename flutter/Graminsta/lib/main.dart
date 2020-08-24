@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
+import 'package:Graminsta/personal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
 
@@ -30,15 +31,12 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: optionStyle,
     ), //change this into the timeline page.
-    Text(
-      'Index 1: Person',
-      style: optionStyle,
-    ), //change this into the gallery page.
+    PersonalPage(), //change this into the gallery page.
   ];
 
   void _onItemTapped(int index) {

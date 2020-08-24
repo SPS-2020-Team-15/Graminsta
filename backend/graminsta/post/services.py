@@ -93,12 +93,15 @@ def delete_follow_relationship(request_user, target_user):
 
 def get_all_personal_post(user):
     """
-    Deletes an existing follow relationship.
+    Get all posts published by the requst user.
 
     Parameters
     ------------
-    request_user: The user who triggered this action.
-    target_user: The user who will be unfollowed by the request_user.
+    user: The request user
+    
+    Returns
+    -------
+    posts: A QuerySet representing the posts published by the requst user.
     """
     posts = Post.objects.filter(publisher=user).order_by("-created_at")
     return posts

@@ -14,7 +14,8 @@ class FollowService {
     final response = await http.post("post/follow/",
         body: {
           "target_user": targetUserID.toString(),
-        });
+        },
+    );
     if (response.statusCode == 201) {
       return true;
     }
@@ -36,7 +37,8 @@ class UnfollowService {
     final response = await http.post("post/unfollow/",
         body: {
           "target_user": targetUserID.toString(),
-        });
+        },
+    );
     if (response.statusCode == 204) {
       return true;
     }

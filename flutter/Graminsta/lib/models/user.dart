@@ -7,7 +7,7 @@ class User {
   bool isFollowing;
 
   User({this.id, this.username, this.firstName,
-    this.lastName, this.isFollowing});
+    this.lastName, this.isFollowing,});
 
   factory User.fromJson(Map<String, Object> json, Set<int> followingPeople) {
     bool isFollowing = followingPeople.contains(json['id']);

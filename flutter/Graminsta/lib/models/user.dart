@@ -13,7 +13,7 @@ class User {
       this.firstName,
       this.lastName,
       this.email,
-      this.password});
+      this.password,});
 
   factory User.fromJson(Map<String, Object> json) {
     return User(
@@ -39,7 +39,7 @@ class UserInfo {
   final int gender;
   final int age;
 
-  UserInfo({this.user, this.gender, this.age});
+  UserInfo({this.user, this.gender, this.age,});
 
   factory UserInfo.fromJson(Map<String, Object> json) {
     return UserInfo(

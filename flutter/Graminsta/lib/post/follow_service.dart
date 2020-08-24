@@ -1,5 +1,4 @@
 import 'package:Graminsta/service/http_service.dart';
-import 'dart:convert';
 
 class FollowService {
   static FollowService _instance;
@@ -13,10 +12,32 @@ class FollowService {
 
   static Future<bool> follow(int targetUserID) async {
     final response = await http.post("post/follow/",
-        body: json.encode({
-          "target_user": targetUserID,
-        }));
-    if (response.statusCode == 209) {
+        body: {
+          "target_user": targetUserID.toString(),
+        });
+    if (response.statusCode == 201) {
+      return true;
+    }
+    return false;
+  }
+}
+
+class UnfollowService {
+  static UnfollowService _instance;
+
+  factory UnfollowService() {
+    _instance ??= UnfollowService._();
+    return _instance;
+  }
+
+  UnfollowService._();
+
+  static Future<bool> unfollow(int targetUserID) async {
+    final response = await http.post("post/unfollow/",
+        body: {
+          "target_user": targetUserID.toString(),
+        });
+    if (response.statusCode == 204) {
       return true;
     }
     return false;

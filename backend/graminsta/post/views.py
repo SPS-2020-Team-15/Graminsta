@@ -28,13 +28,31 @@ class FollowView(APIView):
             Data containing from_user and to_user
         """
         request_user = request.user
-        target_user_id = request.data.get('target_user')
+        target_user_id = int(request.data.get('target_user'))
         target_user = get_user_model().objects.get(pk=target_user_id)
         create_follow_relationship(request_user, target_user)
         return Response(status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def delete(request):
+    def get(request):
+        """Gets the request user's following people
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format
+            Users that follows the given user
+        """
+        following_people = get_people_user_follows(request.user)
+        return Response(UserSerializer(following_people, many=True).data)
+
+
+class UnfollowView(APIView):
+    @staticmethod
+    def post(request):
         """Deletes an existing follow relationship
 
         Parameters
@@ -48,6 +66,8 @@ class FollowView(APIView):
         delete_follow_relationship(request_user, target_user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class FollowingView(APIView):
     @staticmethod
     def get(request, user_id):
         """Gets the given user's following people

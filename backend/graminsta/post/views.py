@@ -11,7 +11,8 @@ from .serializers import PostSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows,
-                       create_post)
+                       create_post,
+                       get_timeline_posts)
 
 
 class FollowView(APIView):
@@ -125,3 +126,24 @@ class PostRecordView(APIView):
             PostSerializer(post).data,
             status=status.HTTP_201_CREATED
         )
+
+
+class TimelineView(APIView):
+    """
+    A class based view to show timeline.
+    """
+    @staticmethod
+    def get(request):
+        """Gets the given user's timeline
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format Posts that should be
+            displayed at the given user's timeline
+        """
+        posts = get_timeline_posts(request.user)
+        return Response(PostSerializer(posts, many=True).data)

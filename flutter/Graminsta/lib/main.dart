@@ -37,6 +37,10 @@ class _HomePageState extends State<HomePage> {
       'Index 0: Home',
       style: optionStyle,
     ), //change this into the timeline page.
+    Text(
+      'Index 1: Person',
+      style: optionStyle,
+    ), //change this into the gallery page.
     UsersList(),
   ];
 
@@ -112,6 +116,10 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   title: Text('Home'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text('Person'),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.people),

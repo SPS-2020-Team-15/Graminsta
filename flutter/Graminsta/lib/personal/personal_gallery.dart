@@ -1,5 +1,5 @@
 import 'package:Graminsta/config.dart';
-import 'package:Graminsta/models/post.dart';
+import 'package:Graminsta/post/post_widget.dart';
 import 'package:Graminsta/spec/sizing.dart';
 import 'package:Graminsta/spec/spacing.dart';
 import 'package:flutter/material.dart';
@@ -165,6 +165,11 @@ class _PersonalGalleryState extends State<PersonalGallery> {
 
   Widget _listView(List postList) {
     //Todo: build ListView
-    return Container();
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return postWidget(postList[index]);
+      },
+      itemCount: postList.length,
+    );
   }
 }

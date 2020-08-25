@@ -62,6 +62,7 @@ def create_authentication_token(data):
         return Token.objects.create(user=user)
     return None
 
+
 def get_user_info(user):
     """Get User Info from the database.
 

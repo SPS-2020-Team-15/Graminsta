@@ -2,6 +2,7 @@ import 'package:Graminsta/models/user_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/core/user_service.dart';
+import 'package:Graminsta/post/personal_service.dart';
 import 'custom_icons_icons.dart';
 import 'package:Graminsta/spec/sizing.dart';
 
@@ -11,9 +12,18 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  Future<UserInfo> _getInfo() async {
+  static UserInfo _userInfo;
+  static String _postCount;
+  static String _followingCount;
+  static String _fanCount;
+
+  Future<void> _getData() async {
     final info = await getUserInfo();
-    return info;
+    _userInfo = info;
+    final count = await getPersonalCount();
+    _postCount = count["post_count"];
+    _followingCount = count["following_count"];
+    _fanCount = count["fan_count"];
   }
 
   _showFollowing() {
@@ -31,10 +41,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getInfo(),
-      builder: (BuildContext context, AsyncSnapshot<UserInfo> snapshot) {
-        if (snapshot.hasData) {
-          final _userInfo = snapshot.data;
+      future: _getData(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return Container(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
@@ -139,11 +148,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
-                      //Todo: Get postNumber, FollowingNumber and FansNumber
                       child: Column(
                         children: <Widget>[
                           Text(
-                            "xx",
+                            _postCount.toString(),
                             textAlign: TextAlign.center,
                             style: new TextStyle(
                               fontSize: PersonalInfoTitleFontSize,
@@ -167,7 +175,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              "xx",
+                              _followingCount.toString(),
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 fontSize: PersonalInfoTitleFontSize,
@@ -192,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              "xx",
+                              _fanCount.toString(),
                               textAlign: TextAlign.center,
                               style: new TextStyle(
                                 fontSize: PersonalInfoTitleFontSize,

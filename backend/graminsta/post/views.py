@@ -12,7 +12,10 @@ from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows,
                        create_post,
-                       get_all_personal_post)
+                       get_all_personal_post,
+                       get_post_count,
+                       get_fan_count,
+                       get_following_count)
 
 
 class FollowView(APIView):
@@ -101,6 +104,7 @@ class PostRecordView(APIView):
             status=status.HTTP_201_CREATED
         )
 
+
 class PersonalGalleryView(APIView):
     """
     A class based view for viewing all personal posts
@@ -112,16 +116,42 @@ class PersonalGalleryView(APIView):
 
         Parameters
         ----------
+        request: GET request
+
         Returns
         ----------
-        response: json format
+        response: list
             List of all personal posts
         """
         posts = get_all_personal_post(request.user)
         result = []
         for post in posts:
             result.append(PostSerializer(post).data)
-        return Response(
-            result,
-            status=status.HTTP_200_OK
-        )
+        return Response(result)
+
+
+class PersonalCountView(APIView):
+    """
+    A class based view for getting post count, following count and fans count
+    """
+
+    def get(self, request):
+        """
+        Get post count, following count and fans count
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        ----------
+        response: json format
+            data contain post count, following count and fans count
+        """
+        post_count = get_post_count(request.user)
+        following_count = get_following_count(request.user)
+        fan_count = get_fan_count(request.user)
+        return Response({
+            "post_count": post_count,
+            "following_count": following_count,
+            "fan_count": fan_count})

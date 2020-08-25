@@ -8,8 +8,7 @@ class PersonalGallery extends StatefulWidget {
 
 class _PersonalGalleryState extends State<PersonalGallery> {
   Future<List> _getPosts() async {
-    final list = await PersonalService.getAllPersonalPost();
-    print(list[0].img);
+    final list = await getAllPersonalPost();
     return list;
   }
 
@@ -37,7 +36,7 @@ class _PersonalGalleryState extends State<PersonalGallery> {
                   Flexible(
                     child: TabBarView(children: <Widget>[
                       _gridView(snapshot.data),
-                      Text("2"),
+                      _listView(snapshot.data),
                     ]),
                   )
                 ],
@@ -56,12 +55,18 @@ class _PersonalGalleryState extends State<PersonalGallery> {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
       ),
-      children: postList
-          .map((item) => Image.asset(
-                item.img,
-                fit: BoxFit.cover,
-              ))
-          .toList(),
+//      children: postList
+//      //Todo: show image
+//          .map((item) => Image.asset(
+//                item.img,
+//                fit: BoxFit.cover,
+//              ))
+//          .toList(),
     );
+  }
+
+  Widget _listView(List postList) {
+    //Todo: build ListView
+    return Container();
   }
 }

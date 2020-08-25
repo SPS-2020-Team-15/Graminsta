@@ -4,7 +4,10 @@ Urls for post app.
 """
 
 from django.urls import path
-from .views import PostRecordView, FollowView, PersonalGalleryView
+from .views import (PostRecordView,
+                    FollowView,
+                    PersonalGalleryView,
+                    PersonalCountView)
 
 
 app_name = 'post'
@@ -12,4 +15,6 @@ urlpatterns = [
     path('', PostRecordView.as_view(), name='post'),
     path('follow/', FollowView.as_view(), name='follow'),
     path('follow/<user_id>/', FollowView.as_view(), name='following_people'),
-    path('personal/', PersonalGalleryView.as_view(), name='personal_gallery')]
+    path('personal/', PersonalGalleryView.as_view(), name='personal_gallery'),
+    path('personal_count/', PersonalCountView.as_view(), name='personal_count')
+]

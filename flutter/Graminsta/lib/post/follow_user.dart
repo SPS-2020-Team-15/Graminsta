@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Graminsta/models/user.dart';
+import 'package:Graminsta/models/list_user.dart';
 import 'package:Graminsta/post/follow_service.dart';
 import 'package:Graminsta/core/user_service.dart';
 
 
 class UsersListState extends State<UsersList> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<User> _users = List<User>();
+  List<ListUser> _users = List<ListUser>();
 
   ListTile _buildItemsForListView(BuildContext context, int index) {
     return ListTile(
@@ -35,7 +35,7 @@ class UsersListState extends State<UsersList> {
         ),
         body: FutureBuilder(
           future: fetchUsers(),
-          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<ListUser>> snapshot) {
             if (snapshot.hasData) {
               _users = snapshot.data;
               return ListView.separated(

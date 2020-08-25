@@ -55,8 +55,8 @@ class _PersonalGalleryState extends State<PersonalGallery> {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
       ),
+//Todo: show image
 //      children: postList
-//      //Todo: show image
 //          .map((item) => Image.asset(
 //                item.img,
 //                fit: BoxFit.cover,

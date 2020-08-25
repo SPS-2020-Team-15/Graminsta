@@ -16,7 +16,7 @@ Future<List<Post>> getAllPersonalPost() async {
 Future<Map<Object, Object>> getPersonalCount() async {
   final res = await http.get("post/personal_count/");
   if (res.statusCode == 200) {
-    var count = jsonDecode(res.body);
+    final count = jsonDecode(res.body);
     return count;
   } else {
     throw Exception('Failed to load personal count');

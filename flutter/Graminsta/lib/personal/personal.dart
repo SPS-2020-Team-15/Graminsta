@@ -1,6 +1,6 @@
-import 'package:Graminsta/personal_gallery.dart';
+import 'package:Graminsta/personal/personal_gallery.dart';
 import 'package:flutter/material.dart';
-import 'package:Graminsta/personal_info.dart';
+import 'package:Graminsta/personal/personal_info.dart';
 
 class PersonalPage extends StatefulWidget {
   @override

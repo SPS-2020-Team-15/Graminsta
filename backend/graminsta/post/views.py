@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser
 from core.serializers import UserSerializer
 from .serializers import PostSerializer
 from .services import (create_follow_relationship,
@@ -76,7 +76,7 @@ class PostRecordView(APIView):
     """
     A class based view for creating Post Record
     """
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser]
 
     def post(self, request):
         """
@@ -114,13 +114,11 @@ class TimelineView(APIView):
     def get(request):
         """Gets the given user's timeline
 
-
         Parameters
         ----------
         request: GET request
 
         Returns
-
         -------
         response: json format Posts that should be
             displayed at the given user's timeline
@@ -131,38 +129,13 @@ class TimelineView(APIView):
 
 class PersonalGalleryView(APIView):
     """
-    A class based view for viewing all personal posts
+    A class based view for viewing all personal posts, post count,
+    following count and fans count
     """
 
     def get(self, request):
         """
-        Get all personal post
-
-        Parameters
-        ----------
-        request: GET request
-
-        Returns
-
-        ----------
-        response: list
-            List of all personal posts
-        """
-        posts = get_all_personal_post(request.user)
-        result = []
-        for post in posts:
-            result.append(PostSerializer(post).data)
-        return Response(result)
-
-
-class PersonalCountView(APIView):
-    """
-    A class based view for getting post count, following count and fans count
-    """
-
-    def get(self, request):
-        """
-        Get post count, following count and fans count
+        Get all personal post, post count, following count and fans count
 
         Parameters
         ----------
@@ -171,12 +144,16 @@ class PersonalCountView(APIView):
         Returns
         ----------
         response: json format
-            data contain post count, following count and fans count
+            Data contains all personal posts, post count,
+            following count and fans count
         """
+        posts = get_all_personal_post(request.user)
+        result = PostSerializer(posts, many=True).data
         post_count = get_post_count(request.user)
         following_count = get_following_count(request.user)
         fan_count = get_fan_count(request.user)
         return Response({
+            "posts": result,
             "post_count": post_count,
             "following_count": following_count,
             "fan_count": fan_count})

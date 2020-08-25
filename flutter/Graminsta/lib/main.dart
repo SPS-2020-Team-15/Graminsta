@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
-import 'package:Graminsta/personal.dart';
+import 'package:Graminsta/personal/personal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
 

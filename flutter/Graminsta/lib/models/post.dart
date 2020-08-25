@@ -20,5 +20,4 @@ class Post {
         timeStamp: json['created_at']
       );
   }
-
 }

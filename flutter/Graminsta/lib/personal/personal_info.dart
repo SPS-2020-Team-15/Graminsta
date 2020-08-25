@@ -2,8 +2,7 @@ import 'package:Graminsta/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/core/user_service.dart';
-import 'package:Graminsta/post/personal_service.dart';
-import 'custom_icons_icons.dart';
+import 'package:Graminsta/custom_icons_icons.dart';
 import 'package:Graminsta/spec/sizing.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -12,30 +11,11 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  static UserInfo _userInfo;
-  static String _postCount;
-  static String _followingCount;
-  static String _fanCount;
+  UserInfo _userInfo;
 
   Future<void> _getData() async {
     final info = await getUserInfo();
     _userInfo = info;
-    final count = await getPersonalCount();
-    _postCount = count["post_count"];
-    _followingCount = count["following_count"];
-    _fanCount = count["fan_count"];
-  }
-
-  _showFollowing() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //Todo: Following Page
-    }));
-  }
-
-  _showFans() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //Todo: Fans Page
-    }));
   }
 
   @override
@@ -127,11 +107,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             ],
                           ),
                           Text(
-                            _userInfo.user.firstName +
-                                " " +
-                                _userInfo.user.lastName +
-                                " | " +
-                                _userInfo.user.email,
+                            '${_userInfo.user.firstName} ${_userInfo.user.lastName} | ${_userInfo.user.email}',
                             textAlign: TextAlign.left,
                             style:
                                 new TextStyle(fontSize: PersonalInfoFontSize),
@@ -143,84 +119,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 Divider(
                   height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            _postCount.toString(),
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                              fontSize: PersonalInfoTitleFontSize,
-                            ),
-                          ),
-                          Text(
-                            "Posts",
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                                fontSize: PersonalInfoFontSize,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          _showFollowing();
-                        },
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              _followingCount.toString(),
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                fontSize: PersonalInfoTitleFontSize,
-                              ),
-                            ),
-                            Text(
-                              "Following",
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                  fontSize: PersonalInfoFontSize,
-                                  color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          _showFollowing();
-                        },
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              _fanCount.toString(),
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                fontSize: PersonalInfoTitleFontSize,
-                              ),
-                            ),
-                            Text(
-                              "Fans",
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(
-                                  fontSize: PersonalInfoFontSize,
-                                  color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 20,
                 ),
               ],
             ),

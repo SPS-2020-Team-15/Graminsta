@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:Graminsta/models/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:Graminsta/service/http_service.dart';

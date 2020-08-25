@@ -6,7 +6,7 @@ Services for core module.
 
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer
+from django.contrib.auth import models as auth_models
 from .serializers import UserInfoSerializer
 from .models import UserInfo
 
@@ -27,8 +27,7 @@ def create_userinfo(validated_data):
     userinfo_serializer = UserInfoSerializer(data=validated_data)
     userinfo_serializer.is_valid(raise_exception=True)
     user_data = validated_data.pop('user')
-    user = UserSerializer.create(
-        UserSerializer(), validated_data=user_data)
+    user = auth_models.User.objects.create_user(**user_data)
     user_info = UserInfo.objects.create(
         user=user,
         age=validated_data.pop('age'),

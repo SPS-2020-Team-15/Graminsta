@@ -15,7 +15,8 @@ from .services import (create_follow_relationship,
                        get_all_personal_post,
                        get_post_count,
                        get_fan_count,
-                       get_following_count)
+                       get_following_count,
+                       get_timeline_posts)
 
 
 class FollowView(APIView):
@@ -105,6 +106,29 @@ class PostRecordView(APIView):
         )
 
 
+class TimelineView(APIView):
+    """
+    A class based view to show timeline.
+    """
+    @staticmethod
+    def get(request):
+        """Gets the given user's timeline
+
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+
+        -------
+        response: json format Posts that should be
+            displayed at the given user's timeline
+        """
+        posts = get_timeline_posts(request.user)
+        return Response(PostSerializer(posts, many=True).data)
+
+
 class PersonalGalleryView(APIView):
     """
     A class based view for viewing all personal posts
@@ -119,6 +143,7 @@ class PersonalGalleryView(APIView):
         request: GET request
 
         Returns
+
         ----------
         response: list
             List of all personal posts

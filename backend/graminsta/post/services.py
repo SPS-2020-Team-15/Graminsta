@@ -4,6 +4,7 @@ Service functions for post module
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from .models import Post, FollowRelationship
 
 
@@ -90,6 +91,20 @@ def delete_follow_relationship(request_user, target_user):
                                      from_user=request_user,
                                      to_user=target_user)
     relationship.delete()
+
+
+def get_timeline_posts(request_user):
+    """
+    Returns posts that should be displayed at timeline, including
+    posts created by the request user and his/her following people,
+    and posts which mention or mark the request user.
+    """
+    following_people = get_people_user_follows(request_user)
+    posts = Post.objects.filter(Q(publisher__in=following_people) |
+                                Q(publisher=request_user) |
+                                Q(mention_user=request_user) |
+                                Q(marked_user=request_user))
+    return posts
 
 
 def get_all_personal_post(user):

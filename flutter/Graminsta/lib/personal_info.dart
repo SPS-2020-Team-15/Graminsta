@@ -1,4 +1,4 @@
-import 'package:Graminsta/models/user_info.dart';
+import 'package:Graminsta/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/core/user_service.dart';

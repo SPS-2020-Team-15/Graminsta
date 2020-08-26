@@ -11,11 +11,9 @@ class PostSerializer(serializers.ModelSerializer):
     Serializer that serializes Post object
     """
     publisher_username = serializers.CharField(source='publisher.username')
-    marked_username = \
-        serializers.SerializerMethodField('get_marked_username')
-    mention_username = \
-        serializers.SerializerMethodField('get_mention_username')
-    time_stamp = serializers.SerializerMethodField('get_time_stamp')
+    marked_username = serializers.SerializerMethodField()
+    mention_username = serializers.SerializerMethodField()
+    time_stamp = serializers.SerializerMethodField()
 
     def get_marked_username(self, obj):
         """

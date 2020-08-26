@@ -30,7 +30,7 @@ class Post(models.Model):
         return '%s: %s' % (self.publisher.username,
                            self.description)
 
-      
+
 class Comment(models.Model):
     """
     A comment is usually user-generated under other user's post,

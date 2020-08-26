@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Graminsta/models/user.dart';
+import 'package:Graminsta/models/list_user.dart';
 import 'package:Graminsta/post/follow_service.dart';
 import 'package:Graminsta/core/user_service.dart';
 
 
 class UsersListState extends State<UsersList> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<User> _users = List<User>();
-  Set<int> _followed = Set<int>();
+  List<ListUser> _users = List<ListUser>();
 
   ListTile _buildItemsForListView(BuildContext context, int index) {
-    final alreadyFollowed = _followed.contains(_users[index].id);
     return ListTile(
-      title: Text(_users[index].username),
-      subtitle: Text('${_users[index].firstName} ${_users[index].lastName}'),
-      trailing: FlatButton.icon(
+      title: Text('${_users[index].firstName} ${_users[index].lastName}'),
+      trailing: _users[index].isFollowing ?
+      FlatButton.icon(
+        icon: Icon(Icons.delete),
+        label: Text('Unfollow'),
+        onPressed: () => {_deleteFollow(index)},
+      ):
+      FlatButton.icon(
         icon: Icon(Icons.add),
         label: Text('Follow'),
-        onPressed: alreadyFollowed ? null :() => {_createFollow(index)},
+        onPressed: () => {_createFollow(index)},
       ),
     );
   }
@@ -26,13 +29,10 @@ class UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-          title: Text('Users'),
-        ),
+        key: _scaffoldKey,
         body: FutureBuilder(
           future: fetchUsers(),
-          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<ListUser>> snapshot) {
             if (snapshot.hasData) {
               _users = snapshot.data;
               return ListView.separated(
@@ -54,7 +54,7 @@ class UsersListState extends State<UsersList> {
   }
 
   void _createFollow (int index) async{
-    _followed.add(_users[index].id);
+    _users[index].isFollowing = true;
 
     final followed = await FollowService.follow(_users[index].id);
     if (followed) {
@@ -65,6 +65,20 @@ class UsersListState extends State<UsersList> {
           duration: Duration(milliseconds: 2000)));
     }
   }
+
+  void _deleteFollow (int index) async{
+    _users[index].isFollowing = false;
+
+    final unfollowed = await UnfollowService.unfollow(_users[index].id);
+    if (unfollowed) {
+      setState(() {});//refresh the current page
+    } else {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Unable to unfollow'),
+          duration: Duration(milliseconds: 2000)));
+    }
+  }
+
 }
 
 class UsersList extends StatefulWidget {

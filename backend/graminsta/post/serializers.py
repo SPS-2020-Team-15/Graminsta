@@ -15,19 +15,22 @@ class PostSerializer(serializers.ModelSerializer):
     mention_username = serializers.SerializerMethodField()
     time_stamp = serializers.SerializerMethodField()
 
-    def get_marked_username(self, obj):
+    @classmethod
+    def get_marked_username(cls, obj):
         """
         Change the id to username in marked_user.
         """
         return [publisher.username for publisher in obj.marked_user.all()]
 
-    def get_mention_username(self, obj):
+    @classmethod
+    def get_mention_username(cls, obj):
         """
         Change the id to username in mention_user.
         """
         return [publisher.username for publisher in obj.mention_user.all()]
 
-    def get_time_stamp(self, obj):
+    @classmethod
+    def get_time_stamp(cls, obj):
         """
         Change the time format.
         """

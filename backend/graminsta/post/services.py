@@ -4,6 +4,7 @@ Service functions for post module
 
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from .models import Post, FollowRelationship
 
 
@@ -70,6 +71,23 @@ def get_people_user_follows(user):
     return following_people
 
 
+def get_following_relationships(user):
+    """
+    Returns names of users that the given user follows.
+
+    Parameters
+    ------------
+    user: The user whose following people will be returned.
+
+    Returns
+    -------
+    relationships: The QuerySet contains the relationships
+        from the given user.
+    """
+    relationships = FollowRelationship.objects.filter(from_user=user)
+    return relationships
+
+
 def create_follow_relationship(request_user, target_user):
     """
     Creates a new follow relationship.
@@ -102,3 +120,84 @@ def delete_follow_relationship(request_user, target_user):
                                      from_user=request_user,
                                      to_user=target_user)
     relationship.delete()
+
+
+def get_timeline_posts(request_user):
+    """
+    Returns posts that should be displayed at timeline, including
+    posts created by the request user and his/her following people,
+    and posts which mention or mark the request user.
+    """
+    following_people = get_people_user_follows(request_user)
+    posts = Post.objects.filter(Q(publisher__in=following_people) |
+                                Q(publisher=request_user) |
+                                Q(mention_user=request_user) |
+                                Q(marked_user=request_user))
+    return posts
+
+
+def get_all_personal_post(user):
+    """
+    Get all posts published by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    posts: A QuerySet representing the posts published by the requst user.
+    """
+    posts = Post.objects.filter(publisher=user).order_by("-created_at")
+    return posts
+
+
+def get_post_count(user):
+    """
+    Get number of posts published by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of posts published by the requst user.
+    """
+    count = Post.objects.filter(publisher=user).count()
+    return count
+
+
+def get_following_count(user):
+    """
+    Get number of users followed by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of users followed by the requst user.
+    """
+    count = FollowRelationship.objects.filter(from_user=user).count()
+    return count
+
+
+def get_fan_count(user):
+    """
+    Get number of users followed by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of users followed by the requst user.
+    """
+    count = FollowRelationship.objects.filter(to_user=user).count()
+    return count

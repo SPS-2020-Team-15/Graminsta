@@ -25,4 +25,17 @@ class AuthService {
     }
     return false;
   }
+
+  static Future<dynamic> signUp(dynamic userInfo) async {
+    final headers = {'Content-Type': 'application/json'};
+    final res = await http.post("core/user/",
+        headers: headers, body: json.encode(userInfo));
+    dynamic mess = json.decode(res.body);
+    if (res.statusCode == 201) {
+      mess["status"] = "success";
+    } else {
+      mess["status"] = "fail";
+    }
+    return mess;
+  }
 }

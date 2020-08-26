@@ -6,11 +6,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
-from core.serializers import UserSerializer
-from .serializers import PostSerializer
+from .serializers import PostSerializer, UserSerializer, FollowSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
-                       get_people_user_follows,
+                       get_following_relationships,
                        create_post,
                        get_timeline_posts)
 
@@ -44,11 +43,11 @@ class FollowView(APIView):
 
         Returns
         -------
-        response: json format
-            Users that follows the given user
+        response: json format relationship id and
+            users that follows the given user
         """
-        following_people = get_people_user_follows(request.user)
-        return Response(UserSerializer(following_people, many=True).data)
+        following = get_following_relationships(request.user)
+        return Response(FollowSerializer(following, many=True).data)
 
 
 class UnfollowView(APIView):
@@ -90,8 +89,8 @@ class FollowingView(APIView):
             Users that follows the given user
         """
         user = get_user_model().objects.get(pk=user_id)
-        following_people = get_people_user_follows(user)
-        return Response(UserSerializer(following_people, many=True).data)
+        following = get_following_relationships(user)
+        return Response(UserSerializer(following, many=True).data)
 
 
 class PostRecordView(APIView):
@@ -147,3 +146,11 @@ class TimelineView(APIView):
         """
         posts = get_timeline_posts(request.user)
         return Response(PostSerializer(posts, many=True).data)
+
+
+class UserView(APIView):
+    @staticmethod
+    def get(request):
+        context = {"request_user": request.user}
+        users = get_user_model().objects.all()
+        return Response(UserSerializer(users, many=True, context=context).data)

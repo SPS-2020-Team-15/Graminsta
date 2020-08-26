@@ -149,8 +149,22 @@ class TimelineView(APIView):
 
 
 class UserView(APIView):
+    """
+    A class based view to list all the users.
+    """
     @staticmethod
     def get(request):
+        """Gets all the users and if they are followed by
+            the request user.
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format users
+        """
         context = {"request_user": request.user}
         users = get_user_model().objects.all()
         return Response(UserSerializer(users, many=True, context=context).data)

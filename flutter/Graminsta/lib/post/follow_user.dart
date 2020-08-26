@@ -29,10 +29,7 @@ class UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-          title: Text('Users'),
-        ),
+        key: _scaffoldKey,
         body: FutureBuilder(
           future: fetchUsers(),
           builder: (BuildContext context, AsyncSnapshot<List<ListUser>> snapshot) {

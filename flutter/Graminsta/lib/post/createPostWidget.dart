@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:Graminsta/post/mentionUserWidget.dart';
 import 'package:flutter/material.dart';
+import '../setting/setting.dart' as setting;
 
 enum AccessControlType {
   public,
@@ -62,10 +63,11 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
               ),
               onPressed: () async {
                 final http.Response response = await http.post(
-                    "http://10.0.2.2:8000/post/",
+                    setting.ip_dev + "post/",
                     headers: <String, String>{},
                     body: {
-                      "publisher_id": "1",
+                      // TODO: Replace with token user
+                      "publisher_id": "8",
                       "description": myController.text,
                       "mention_usernames": mentionedUser,
                       "img": "this is my img",
@@ -114,23 +116,25 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                   trailing: Icon(Icons.arrow_right, size: 30),
                 ),
                 new ListTile(
-                    leading: const Icon(Icons.alternate_email),
-                    title: Text(
-                        mentionUserTitle.padRight(10, ' ') + mentionedUser),
-                    trailing: IconButton(
-                        icon: Icon(Icons.arrow_right, size: 30),
-                        iconSize: 48,
-                        onPressed: () async {
-                          String result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MentionUserWidget(),
-                            ),
-                          );
-                          setState(() {
-                            mentionedUser = result.replaceAll('"', '');
-                          });
-                        })),
+                  leading: const Icon(Icons.alternate_email),
+                  title:
+                      Text(mentionUserTitle.padRight(20, ' ') + mentionedUser),
+                  trailing: IconButton(
+                    icon: Icon(Icons.arrow_right, size: 30),
+                    iconSize: 48,
+                    onPressed: () async {
+                      String result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MentionUserWidget(),
+                        ),
+                      );
+                      setState(() {
+                        mentionedUser = result.replaceAll('"', '');
+                      });
+                    },
+                  ),
+                ),
                 new ListTile(
                   leading: const Icon(Icons.person),
                   title: Text("Share With"),

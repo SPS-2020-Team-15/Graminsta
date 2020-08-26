@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as JSON;
+import '../setting/setting.dart' as setting;
 
 class MentionUserWidget extends StatefulWidget {
   MentionUserWidget({Key key}) : super(key: key);
@@ -78,11 +80,23 @@ class _MentionUserWidgetState extends State<MentionUserWidget> {
 
   Future<List<String>> getUsername() async {
     final http.Response response =
-        await http.get("http://10.0.2.2:8000/core/user/");
+        await http.get(setting.ip_dev + "core/user/");
+    print(setting.ip_dev + "core/user/");
 
     if (response.statusCode == 200) {
       // If the server did return a 200 request OK response,
       // then split the string
+      // print(response.body);
+      // List<Map> result = JSON.jsonDecode(response.body);
+      // print(reslt);
+      // List<String> userDisplayedName = new List();
+      // for (int i = 0; i < result.length; ++i) {
+      //   userDisplayedName
+      //       .add(result[i]["first_name"] + " " + result[i]["last_name"]);
+      // }
+
+      // print(userDisplayedName);
+      // return userDisplayedName;
       return response.body.split(",");
     } else {
       // If the server did not return a 200 response,

@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .services import create_userinfo, create_authentication_token, \
-    get_all_username
+    get_all_users
 from .serializers import UserSerializer, UserInfoSerializer
 
 
@@ -37,7 +37,7 @@ class UserInfoRecordView(APIView):
         )
 
     def get(self, request):
-        """Get username based on request's requirements
+        """Get user's displayed name based on request's requirements
 
         Parameters
         --------------
@@ -47,27 +47,16 @@ class UserInfoRecordView(APIView):
         Returns
         --------------
         response: json format
-            username of all users that satisfy the requirements
+            displayed name of all users that satisfy the requirements
         """
-        username = get_all_username()
+        all_users = get_all_users()
+        all_users_name = []
+        separator = ","
+        for user in all_users:
+            all_users_name.append(user.first_name + " " + user.last_name)
         return Response(
-            username,
+            separator.join(all_users_name),
             status=status.HTTP_200_OK)
-
-    @staticmethod
-    def get(request):
-        """Get all the users
-
-        Parameters
-        ----------
-        request: GET request
-
-        Returns
-        -------
-        response: json format users
-        """
-        users = get_user_model().objects.all()
-        return Response(UserSerializer(users, many=True).data)
 
 
 class UserLoginView(APIView):

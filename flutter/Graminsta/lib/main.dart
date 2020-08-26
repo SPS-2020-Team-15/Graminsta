@@ -3,6 +3,7 @@ import 'package:Graminsta/auth/auth.dart';
 import 'package:Graminsta/personal/personal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
+import 'package:Graminsta/post/follow_user.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),
+        '/users': (context) => UsersList(),
       },
     );
   }
@@ -36,7 +38,8 @@ class _HomePageState extends State<HomePage> {
       'Index 0: Home',
       style: optionStyle,
     ), //change this into the timeline page.
-    PersonalPage(), //change this into the gallery page.
+    PersonalPage(), 
+    UsersList(),
   ];
 
   void _onItemTapped(int index) {
@@ -115,6 +118,10 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   title: Text('Person'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  title: Text('People'),
                 ),
               ],
               currentIndex: _selectedIndex,

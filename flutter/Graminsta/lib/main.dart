@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
+import 'package:Graminsta/post/follow_user.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),
+        '/users': (context) => UsersList(),
       },
     );
   }
@@ -30,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: optionStyle,
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
       'Index 1: Person',
       style: optionStyle,
     ), //change this into the gallery page.
+    UsersList(),
   ];
 
   void _onItemTapped(int index) {
@@ -117,6 +120,10 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   title: Text('Person'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  title: Text('People'),
                 ),
               ],
               currentIndex: _selectedIndex,

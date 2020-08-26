@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
+import 'package:Graminsta/personal/personal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
 import 'package:Graminsta/post/follow_user.dart';
@@ -37,10 +38,7 @@ class _HomePageState extends State<HomePage> {
       'Index 0: Home',
       style: optionStyle,
     ), //change this into the timeline page.
-    Text(
-      'Index 1: Person',
-      style: optionStyle,
-    ), //change this into the gallery page.
+    PersonalPage(), 
     UsersList(),
   ];
 

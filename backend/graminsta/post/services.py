@@ -122,3 +122,70 @@ def get_timeline_posts(request_user):
                                 Q(mention_user=request_user) |
                                 Q(marked_user=request_user))
     return posts
+
+
+def get_all_personal_post(user):
+    """
+    Get all posts published by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    posts: A QuerySet representing the posts published by the requst user.
+    """
+    posts = Post.objects.filter(publisher=user).order_by("-created_at")
+    return posts
+
+
+def get_post_count(user):
+    """
+    Get number of posts published by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of posts published by the requst user.
+    """
+    count = Post.objects.filter(publisher=user).count()
+    return count
+
+
+def get_following_count(user):
+    """
+    Get number of users followed by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of users followed by the requst user.
+    """
+    count = FollowRelationship.objects.filter(from_user=user).count()
+    return count
+
+
+def get_fan_count(user):
+    """
+    Get number of users followed by the requst user.
+
+    Parameters
+    ------------
+    user: The request user
+
+    Returns
+    -------
+    count: int
+        The number of users followed by the requst user.
+    """
+    count = FollowRelationship.objects.filter(to_user=user).count()
+    return count

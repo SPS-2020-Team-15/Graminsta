@@ -11,6 +11,10 @@ from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_following_relationships,
                        create_post,
+                       get_all_personal_post,
+                       get_post_count,
+                       get_fan_count,
+                       get_following_count,
                        get_timeline_posts)
 
 
@@ -146,6 +150,32 @@ class TimelineView(APIView):
         """
         posts = get_timeline_posts(request.user)
         return Response(PostSerializer(posts, many=True).data)
+
+
+class PersonalGalleryView(APIView):
+    """
+    A class based view for viewing all personal posts, post count,
+    following count and fans count
+    """
+
+    def get(self, request):
+        """
+        Get all personal post, post count, following count and fans count
+        ----------
+        response: json format
+            Data contains all personal posts, post count,
+            following count and fans count
+        """
+        posts = get_all_personal_post(request.user)
+        result = PostSerializer(posts, many=True).data
+        post_count = get_post_count(request.user)
+        following_count = get_following_count(request.user)
+        fan_count = get_fan_count(request.user)
+        return Response({
+            "posts": result,
+            "post_count": post_count,
+            "following_count": following_count,
+            "fan_count": fan_count})
 
 
 class UserView(APIView):

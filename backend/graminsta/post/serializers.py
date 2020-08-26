@@ -10,13 +10,30 @@ class PostSerializer(serializers.ModelSerializer):
     """
     Serializer that serializes Post object
     """
-    publisher_username = \
-        serializers.SerializerMethodField('get_publisher_username')
+    publisher_username = serializers.CharField(source='publisher.username')
     marked_username = \
         serializers.SerializerMethodField('get_marked_username')
     mention_username = \
         serializers.SerializerMethodField('get_mention_username')
     time_stamp = serializers.SerializerMethodField('get_time_stamp')
+
+    def get_marked_username(self, obj):
+        """
+        Change the id to username in marked_user.
+        """
+        return [publisher.username for publisher in obj.marked_user.all()]
+
+    def get_mention_username(self, obj):
+        """
+        Change the id to username in mention_user.
+        """
+        return [publisher.username for publisher in obj.mention_user.all()]
+
+    def get_time_stamp(self, obj):
+        """
+        Change the time format.
+        """
+        return obj.created_at.strftime("%m-%d %H:%M")
 
     class Meta:
         """
@@ -30,18 +47,6 @@ class PostSerializer(serializers.ModelSerializer):
                   "time_stamp",
                   "marked_username",
                   "mention_username"]
-
-    def get_publisher_username(self, obj):
-        return obj.publisher.username
-
-    def get_marked_username(self, obj):
-        return [publisher.username for publisher in obj.marked_user.all()]
-
-    def get_mention_username(self, obj):
-        return [publisher.username for publisher in obj.mention_user.all()]
-
-    def get_time_stamp(self, obj):
-        return obj.created_at.strftime("%m-%d %H:%M")
 
 
 class CommentSerializer(serializers.ModelSerializer):

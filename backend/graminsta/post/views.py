@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import PostSerializer, UserSerializer, FollowSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
@@ -154,7 +154,7 @@ class PostRecordView(APIView):
             status=status.HTTP_201_CREATED
         )
 
-      
+
 class TimelineView(APIView):
     """
     A class based view to show timeline.

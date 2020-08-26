@@ -3,12 +3,11 @@
 """
 Register and Login.
 """
-from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .services import create_userinfo, create_authentication_token, \
-    get_all_users
+    get_user_model
 from .serializers import UserSerializer, UserInfoSerializer
 
 

@@ -91,8 +91,8 @@ class PostRecordView(APIView):
 
         # _ is not allowed in header key
         # TODO: get user from request
-        publisher_id = int(request.META.get("HTTP_PUBLISHERID"))
-        shared_mode = request.META.get("HTTP_SHAREDMODE")
+        publisher_id = int(request.data["publisher_id"])
+        shared_mode = request.data["shared_mode"]
         description = request.data["description"]
         img = request.data["img"]
 

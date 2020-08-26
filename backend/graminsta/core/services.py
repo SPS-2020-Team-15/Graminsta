@@ -37,20 +37,16 @@ def create_userinfo(validated_data):
     return user_info
 
 
-def get_all_username():
+def get_all_users():
     """
-    Returns all user's id in database.
+    Returns all user's in database.
 
     Returns
     --------------
-    all_users_name: The QuerySet contains every user's id
+    all_users: The QuerySet containers all user object
     """
     all_users = get_user_model().objects.all()
-    all_users_name = []
-    separator = ","
-    for user in all_users:
-        all_users_name.append(user.username)
-    return separator.join(all_users_name)
+    return all_users
 
 
 def create_authentication_token(data):

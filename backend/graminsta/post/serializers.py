@@ -4,6 +4,7 @@ Serializers for post and comment
 
 
 from rest_framework import serializers
+from core.serializers import UserSerializer
 from .models import Post, Comment
 
 
@@ -23,9 +24,16 @@ class CommentSerializer(serializers.ModelSerializer):
     """
     Serializer that serializes Comment object
     """
+    publisher = UserSerializer(required=True)
+
     class Meta:
         """
         Meta Information
         """
         model = Comment
-        fields = '__all__'
+        fields = (
+            'publisher',
+            'content',
+            'created_at',
+            'post'
+        )

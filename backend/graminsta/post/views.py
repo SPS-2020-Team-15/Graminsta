@@ -7,12 +7,14 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
 from core.serializers import UserSerializer
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CommentSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_people_user_follows,
                        create_post,
-                       get_timeline_posts)
+                       get_timeline_posts,
+                       add_comment,
+                       get_all_comments)
 
 
 class FollowView(APIView):
@@ -121,3 +123,47 @@ class TimelineView(APIView):
         """
         posts = get_timeline_posts(request.user)
         return Response(PostSerializer(posts, many=True).data)
+
+
+class CommentView(APIView):
+    """
+    A class based view to manage comments.
+    """
+    @staticmethod
+    def get(request, post_id):
+        """
+        Gets the given post's comments
+
+        Parameters
+        ----------
+        request: GET request
+        post_id: int
+
+        Returns
+        -------
+        response: json format
+            Comments that the post owns
+        """
+        comments = get_all_comments(post_id=post_id)
+        return Response(CommentSerializer(comments, many=True).data)
+
+    @staticmethod
+    def post(request):
+        """
+        Creates a new comment
+
+        Parameters
+        ----------
+        request: json format
+            Data containing all comments
+        """
+        user = request.user
+        comment = request.data.get('comment')
+        post_id = request.data.get("post_id")
+        comment = add_comment(post_id, user, comment)
+
+        comments = get_all_comments(post_id=post_id)
+        return Response(
+            CommentSerializer(comments, many=True).data,
+            status=status.HTTP_201_CREATED
+        )

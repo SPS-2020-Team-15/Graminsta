@@ -5,7 +5,7 @@ Service functions for post module
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from .models import Post, FollowRelationship
+from .models import Post, FollowRelationship, Comment
 
 
 def create_post(publisher_id, description, img, mention_user_ids):
@@ -105,3 +105,34 @@ def get_timeline_posts(request_user):
                                 Q(mention_user=request_user) |
                                 Q(marked_user=request_user))
     return posts
+
+
+def add_comment(post_id, user, comment):
+    """
+    Add a comment
+
+    Parameters
+    ------------
+    post_id: The post_id user comment on
+    user: The user who add the comment
+    """
+    post = Post.objects.get(pk=post_id)
+    comment = Comment.objects.create(
+        publisher=user,
+        post=post,
+        content=comment
+    )
+    return comment
+
+
+def get_all_comments(post_id):
+    """
+    Get all the comments the post owns
+
+    Parameters
+    ------------
+    post: The request post_id
+    """
+    post = Post.objects.get(pk=post_id)
+    comments = Comment.objects.filter(post=post)
+    return comments

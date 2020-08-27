@@ -58,7 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
                   "time_stamp",
                   "marked_username",
                   "mention_username",
-                  "is_marked",]
+                  "is_marked", ]
 
 
 class FollowSerializer(serializers.ModelSerializer):

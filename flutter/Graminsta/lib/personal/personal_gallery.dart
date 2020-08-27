@@ -5,6 +5,7 @@ import 'package:Graminsta/spec/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/post/personal_service.dart';
 import 'package:Graminsta/constants.dart';
+import 'package:Graminsta/personal/personal_follow.dart';
 
 class PersonalGallery extends StatefulWidget {
   @override
@@ -20,15 +21,13 @@ class _PersonalGalleryState extends State<PersonalGallery> {
 
 
   _showFollowing() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //Todo: Following Page
-    }));
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+     FollowingList(option: "following",)));
   }
 
   _showFans() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //Todo: Fans Page
-    }));
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+        FollowingList(option: "follower",)));
   }
 
   @override

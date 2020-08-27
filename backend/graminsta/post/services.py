@@ -71,21 +71,14 @@ def get_people_user_follows(user):
     return following_people
 
 
-def get_following_relationships(user):
+def get_people_following_user(user):
     """
-    Returns names of users that the given user follows.
-
-    Parameters
-    ------------
-    user: The user whose following people will be returned.
-
-    Returns
-    -------
-    relationships: The QuerySet contains the relationships
-        from the given user.
+    Returns a QuerySet representing the users that follow the given user.
     """
-    relationships = FollowRelationship.objects.filter(from_user=user)
-    return relationships
+    ids = FollowRelationship.objects.filter(to_user=user)\
+        .values_list('from_user_id', flat=True)
+    followers = get_user_model().objects.filter(id__in=ids)
+    return followers
 
 
 def create_follow_relationship(request_user, target_user):

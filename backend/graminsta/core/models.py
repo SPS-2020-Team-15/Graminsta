@@ -18,3 +18,6 @@ class UserInfo(models.Model):
     user = models.OneToOneField(auth_models.User, on_delete=models.CASCADE)
     age = models.PositiveIntegerField()
     gender = models.IntegerField(choices=GENDER_CHOICES)
+
+    def __str__(self):
+        return self.user.username

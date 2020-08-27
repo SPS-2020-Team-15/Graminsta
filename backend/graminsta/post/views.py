@@ -296,7 +296,7 @@ class AddMarkView(APIView):
     A class based view to add mark
     """
     @staticmethod
-    def get(request):
+    def post(request):
         """
         Add mark on user and content
 
@@ -329,7 +329,7 @@ class RemoveMarkView(APIView):
     A class based view to remove mark
     """
     @staticmethod
-    def get(request):
+    def post(request):
         """
         Remove mark on user and content
 
@@ -343,7 +343,7 @@ class RemoveMarkView(APIView):
         response: json format post
         """
         user = request.user
-        post_id = request.data.get("post_id")
+        post_id = int(request.data.get("post_id"))
 
         is_removed, post = remove_mark(user, post_id)
         if is_removed:

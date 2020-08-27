@@ -51,7 +51,8 @@ class PostSerializer(serializers.ModelSerializer):
         Meta Information
         """
         model = Post
-        fields = ["publisher",
+        fields = ["id",
+                  "publisher",
                   "publisher_username",
                   "description",
                   "img",

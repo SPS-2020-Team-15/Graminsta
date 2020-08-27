@@ -10,13 +10,44 @@ class PostSerializer(serializers.ModelSerializer):
     """
     Serializer that serializes Post object
     """
+    publisher_username = serializers.CharField(source='publisher.username')
+    marked_username = serializers.SerializerMethodField()
+    mention_username = serializers.SerializerMethodField()
+    time_stamp = serializers.SerializerMethodField()
+
+    @classmethod
+    def get_marked_username(cls, obj):
+        """
+        Change the id to username in marked_user.
+        """
+        return [publisher.username for publisher in obj.marked_user.all()]
+
+    @classmethod
+    def get_mention_username(cls, obj):
+        """
+        Change the id to username in mention_user.
+        """
+        return [publisher.username for publisher in obj.mention_user.all()]
+
+    @classmethod
+    def get_time_stamp(cls, obj):
+        """
+        Change the time format.
+        """
+        return obj.created_at.strftime("%m-%d %H:%M")
 
     class Meta:
         """
         Meta Information
         """
         model = Post
-        fields = '__all__'
+        fields = ["publisher",
+                  "publisher_username",
+                  "description",
+                  "img",
+                  "time_stamp",
+                  "marked_username",
+                  "mention_username"]
 
 
 class FollowSerializer(serializers.ModelSerializer):

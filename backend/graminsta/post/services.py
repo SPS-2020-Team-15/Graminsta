@@ -220,3 +220,47 @@ def get_fan_count(user):
     """
     count = FollowRelationship.objects.filter(to_user=user).count()
     return count
+
+
+def add_mark(user, post_id):
+    """
+    Add mark relation on user and post
+
+    Parameters
+    ----------
+    user: The request user
+    post_id: The request post_id
+
+    Returns
+    -------
+    True if added successfully
+    """
+    post = Post.objects.get(pk=post_id)
+    if post.marked_user.filter(pk=user.pk).exists():
+        return False, post
+    post.marked_user.add(user)
+    post.kudos += 1
+    post.save()
+    return True, post
+
+
+def remove_mark(user, post_id):
+    """
+    Remove mark relation on user and post
+
+    Parameters
+    ----------
+    user: The request user
+    post_id: The request post_id
+
+    Returns
+    -------
+    True if removed successfully
+    """
+    post = Post.objects.get(pk=post_id)
+    if post.marked_user.filter(pk=user.pk).exists():
+        post.marked_user.remove(user)
+        post.kudos -= 1
+        post.save()
+        return True, post
+    return False, post

@@ -6,7 +6,8 @@ Urls for post app.
 from django.urls import path
 from .views import (PostRecordView, FollowView, UnfollowView,
                     FollowingView, TimelineView, UserView,
-                    CommentView, PersonalGalleryView)
+                    CommentView, PersonalGalleryView,
+                    AddMarkView, RemoveMarkView)
 
 
 app_name = 'post'
@@ -20,5 +21,7 @@ urlpatterns = [
     path('timeline/', TimelineView.as_view(), name='timeline'),
     path('comment/', CommentView.as_view(), name="add_comment"),
     path('comment/<post_id>/', CommentView.as_view(), name='comment'),
-    path('personal/', PersonalGalleryView.as_view(), name='personal_gallery')
+    path('personal/', PersonalGalleryView.as_view(), name='personal_gallery'),
+    path('addMark/', AddMarkView.as_view(), name='add_mark'),
+    path('removeMark/', RemoveMarkView.as_view(), name='remove_mark')
 ]

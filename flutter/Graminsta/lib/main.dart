@@ -1,3 +1,5 @@
+import 'package:Graminsta/post/createPostWidget.dart';
+import 'package:Graminsta/post/mentionUserWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
 import 'package:Graminsta/personal/personal.dart';
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
       title: "Graminsta",
       initialRoute: '/home',
       routes: {
+        '/create': (context) => CreatePostWidget(),
+        '/mention': (context) => MentionUserWidget(),
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),
         '/users': (context) => UsersList(),

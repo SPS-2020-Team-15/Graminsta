@@ -23,6 +23,7 @@ class Post(models.Model):
                                           related_name="mentioned_by_post",
                                           blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    shared_mode = models.TextField()
     kudos = models.IntegerField(default=0)
 
     def __str__(self):

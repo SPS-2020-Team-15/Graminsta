@@ -172,8 +172,10 @@ class TimelineView(APIView):
         response: json format Posts that should be
             displayed at the given user's timeline
         """
+        context = {"request_user_id": request.user.id}
         posts = get_timeline_posts(request.user)
-        return Response(PostSerializer(posts, many=True).data)
+        return Response(PostSerializer(posts, many=True,
+                                       context=context).data)
 
 
 class PersonalGalleryView(APIView):

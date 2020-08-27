@@ -14,6 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
     marked_username = serializers.SerializerMethodField()
     mention_username = serializers.SerializerMethodField()
     time_stamp = serializers.SerializerMethodField()
+    is_marked = serializers.SerializerMethodField()
 
     @classmethod
     def get_marked_username(cls, obj):
@@ -36,6 +37,15 @@ class PostSerializer(serializers.ModelSerializer):
         """
         return obj.created_at.strftime("%m-%d %H:%M")
 
+    def get_is_marked(self, obj):
+        """
+        Parameters
+        ------------
+        obj: the post object which will be serialized
+        """
+        marked = obj.marked_user.filter(id=self.context.get('request_user_id'))
+        return marked.exists()
+
     class Meta:
         """
         Meta Information
@@ -47,7 +57,8 @@ class PostSerializer(serializers.ModelSerializer):
                   "img",
                   "time_stamp",
                   "marked_username",
-                  "mention_username"]
+                  "mention_username",
+                  "is_marked",]
 
 
 class FollowSerializer(serializers.ModelSerializer):

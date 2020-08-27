@@ -57,7 +57,7 @@ Widget postWidget(Post post) {
               GestureDetector(
                 //Todo: add mark
                 onTap: () {},
-                child: Icon(Icons.favorite_border),
+                child: post.isMarked ? Icon(Icons.favorite):Icon(Icons.favorite_border),
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(4, 0, 0, 0),

@@ -8,8 +8,8 @@ from django.db.models import Q
 from .models import Post, FollowRelationship, Comment
 
 
-def create_post(publisher_id, description, img, mention_user_ids):
-    """Create a Post in datebase.
+def create_post(publisher_id, description, img, mention_user_ids, shared_mode):
+    """Create a Post in database.
 
     Parameters
     ----------
@@ -31,13 +31,25 @@ def create_post(publisher_id, description, img, mention_user_ids):
         publisher=publisher,
         description=description,
         img=img,
+        shared_mode=shared_mode
     )
 
     user_ids = mention_user_ids.split(",")
-    users = get_user_model().objects.filter(pk__in=user_ids)
+    users = get_user_model().objects.filter(username__in=user_ids)
     post.mention_user.set(users)
     post.save()
     return post
+
+
+def get_all_post():
+    """Get all posts in database
+
+    Returns
+    ---------------
+    posts: all posts in database
+    """
+    posts = Post.objects.all()
+    return posts
 
 
 def get_people_user_follows(user):
@@ -213,3 +225,47 @@ def get_fan_count(user):
     """
     count = FollowRelationship.objects.filter(to_user=user).count()
     return count
+
+
+def add_mark(user, post_id):
+    """
+    Add mark relation on user and post
+
+    Parameters
+    ----------
+    user: The request user
+    post_id: The request post_id
+
+    Returns
+    -------
+    True if added successfully
+    """
+    post = Post.objects.get(pk=post_id)
+    if post.marked_user.filter(pk=user.pk).exists():
+        return False, post
+    post.marked_user.add(user)
+    post.kudos += 1
+    post.save()
+    return True, post
+
+
+def remove_mark(user, post_id):
+    """
+    Remove mark relation on user and post
+
+    Parameters
+    ----------
+    user: The request user
+    post_id: The request post_id
+
+    Returns
+    -------
+    True if removed successfully
+    """
+    post = Post.objects.get(pk=post_id)
+    if post.marked_user.filter(pk=user.pk).exists():
+        post.marked_user.remove(user)
+        post.kudos -= 1
+        post.save()
+        return True, post
+    return False, post

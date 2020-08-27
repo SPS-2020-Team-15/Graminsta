@@ -1,11 +1,12 @@
 # -*- coding: UTF-8 -*-
 """views.py"""
 
+import json
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import (PostSerializer,
                           UserSerializer,
                           CommentSerializer)
@@ -14,13 +15,16 @@ from .services import (create_follow_relationship,
                        get_people_user_follows,
                        get_people_following_user,
                        create_post,
+                       get_all_post,
                        add_comment,
                        get_all_comments,
                        get_all_personal_post,
                        get_post_count,
                        get_fan_count,
                        get_following_count,
-                       get_timeline_posts)
+                       get_timeline_posts,
+                       add_mark,
+                       remove_mark)
 
 
 class FollowView(APIView):
@@ -125,7 +129,7 @@ class PostRecordView(APIView):
     """
     A class based view for creating Post Record
     """
-    parser_classes = [MultiPartParser]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
         """
@@ -144,13 +148,35 @@ class PostRecordView(APIView):
 
         # _ is not allowed in header key
         # TODO: get user from request
-        publisher_id = int(request.META.get("HTTP_PUBLISHERID"))
+        publisher_id = int(request.data["publisher_id"])
+        shared_mode = request.data["shared_mode"]
         description = request.data["description"]
         img = request.data["img"]
-        mention_user_ids = request.data["mention_user_ids"]
-        post = create_post(publisher_id, description, img, mention_user_ids)
+
+        mention_user = request.data["mention_usernames"]
+        post = create_post(publisher_id, description,
+                           img, mention_user, shared_mode)
         return Response(
             PostSerializer(post).data,
+            status=status.HTTP_201_CREATED
+        )
+
+    def get(self, request):
+        """
+        Get All posts
+
+        Returns
+        ------------
+        response: json format
+            All posts
+        """
+        posts = get_all_post()
+        body = ""
+        for post in posts:
+            body += json.dumps(PostSerializer(post).data)
+
+        return Response(
+            body,
             status=status.HTTP_201_CREATED
         )
 
@@ -263,3 +289,69 @@ class UserView(APIView):
         context = {"request_user": request.user}
         users = get_user_model().objects.all()
         return Response(UserSerializer(users, many=True, context=context).data)
+
+
+class AddMarkView(APIView):
+    """
+    A class based view to add mark
+    """
+    @staticmethod
+    def get(request):
+        """
+        Add mark on user and content
+
+        Parameters
+        ----------
+        request: json format
+            Data containing post_id
+
+        Returns
+        -------
+        response: json format post
+        """
+        user = request.user
+        post_id = request.data.get("post_id")
+
+        is_added, post = add_mark(user, post_id)
+        if is_added:
+            return Response(
+                PostSerializer(post).data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            PostSerializer(post).data,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class RemoveMarkView(APIView):
+    """
+    A class based view to remove mark
+    """
+    @staticmethod
+    def get(request):
+        """
+        Remove mark on user and content
+
+        Parameters
+        ----------
+        request: json format
+            Data containing post_id
+
+        Returns
+        -------
+        response: json format post
+        """
+        user = request.user
+        post_id = request.data.get("post_id")
+
+        is_removed, post = remove_mark(user, post_id)
+        if is_removed:
+            return Response(
+                PostSerializer(post).data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            PostSerializer(post).data,
+            status=status.HTTP_400_BAD_REQUEST
+        )

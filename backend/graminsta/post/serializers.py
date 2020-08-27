@@ -19,19 +19,6 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    """
-    Serializer that serializes Comment object
-    """
-
-    class Meta:
-        """
-        Meta Information
-        """
-        model = Comment
-        fields = '__all__'
-
-
 class FollowSerializer(serializers.ModelSerializer):
     """
     Serializer that serializes Following people and relationship id
@@ -70,3 +57,22 @@ class UserSerializer(serializers.ModelSerializer):
         """
         model = get_user_model()
         fields = ['id', 'first_name', 'last_name', 'is_following']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    """
+    Serializer that serializes Comment object
+    """
+    publisher = UserSerializer(required=True)
+
+    class Meta:
+        """
+        Meta Information
+        """
+        model = Comment
+        fields = (
+            'publisher',
+            'content',
+            'created_at',
+            'post'
+        )

@@ -6,10 +6,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
-from .serializers import PostSerializer, UserSerializer, FollowSerializer
+from .serializers import PostSerializer, UserSerializer
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
-                       get_following_relationships,
+                       get_people_user_follows,
+                       get_people_following_user,
                        create_post,
                        get_all_personal_post,
                        get_post_count,
@@ -47,11 +48,30 @@ class FollowView(APIView):
 
         Returns
         -------
-        response: json format relationship id and
-            users that follows the given user
+        response: json format users that follows the given user
         """
-        following = get_following_relationships(request.user)
-        return Response(FollowSerializer(following, many=True).data)
+        following = get_people_user_follows(request.user)
+        return Response(UserSerializer(following, many=True).data)
+
+
+class FollowerView(APIView):
+    """
+    A class based view to look up followers .
+    """
+    @staticmethod
+    def get(request):
+        """Gets the request user's followers
+
+        Parameters
+        ----------
+        request: GET request
+
+        Returns
+        -------
+        response: json format users that follows the given user
+        """
+        following = get_people_following_user(request.user)
+        return Response(UserSerializer(following, many=True).data)
 
 
 class UnfollowView(APIView):
@@ -93,7 +113,7 @@ class FollowingView(APIView):
             Users that follows the given user
         """
         user = get_user_model().objects.get(pk=user_id)
-        following = get_following_relationships(user)
+        following = get_people_user_follows(user)
         return Response(UserSerializer(following, many=True).data)
 
 

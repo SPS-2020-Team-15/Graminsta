@@ -4,15 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget postWidget(Post post) {
-  String _markedUser = '';
-  String _mentionUser = '';
-  for (String username in post.markedUser) {
-    _markedUser += username + ", ";
-  }
-  _markedUser = _markedUser.substring(0, _markedUser.length - 2) + " liked";
-  for (String username in post.mentionUser) {
-    _mentionUser += " @" + username;
-  }
+  String markedUser = post.markedUser.join(', ');
+  markedUser = markedUser == "" ? "" : markedUser + " liked";
+  String mentionUser = post.mentionUser.join(' @');
+  mentionUser = mentionUser == "" ? "" : " @" + mentionUser;
   return Container(
     child: Column(
       children: <Widget>[
@@ -70,7 +65,7 @@ Widget postWidget(Post post) {
                   //Todo: show marked userList
                   onTap: () {},
                   child: Text(
-                    _markedUser,
+                    markedUser,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
@@ -103,7 +98,7 @@ Widget postWidget(Post post) {
                         text: post.description,
                       ),
                       TextSpan(
-                        text: _mentionUser,
+                        text: mentionUser,
                         style: TextStyle(color: Colors.blue),
                       ),
                     ],

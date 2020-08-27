@@ -6,11 +6,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
-from .serializers import PostSerializer, UserSerializer, FollowSerializer
+from .serializers import (PostSerializer,
+                          UserSerializer,
+                          FollowSerializer,
+                          CommentSerializer)
 from .services import (create_follow_relationship,
                        delete_follow_relationship,
                        get_following_relationships,
                        create_post,
+                       add_comment,
+                       get_all_comments,
                        get_all_personal_post,
                        get_post_count,
                        get_fan_count,
@@ -178,6 +183,50 @@ class PersonalGalleryView(APIView):
             "fan_count": fan_count})
 
 
+class CommentView(APIView):
+    """
+    A class based view to manage comments.
+    """
+    @staticmethod
+    def get(request, post_id):
+        """
+        Gets the given post's comments
+
+        Parameters
+        ----------
+        request: GET request
+        post_id: int
+
+        Returns
+        -------
+        response: json format
+            Comments that the post owns
+        """
+        comments = get_all_comments(post_id=post_id)
+        return Response(CommentSerializer(comments, many=True).data)
+
+    @staticmethod
+    def post(request):
+        """
+        Creates a new comment
+
+        Parameters
+        ----------
+        request: json format
+            Data containing all comments
+        """
+        user = request.user
+        comment = request.data.get('comment')
+        post_id = request.data.get("post_id")
+        comment = add_comment(post_id, user, comment)
+
+        comments = get_all_comments(post_id=post_id)
+        return Response(
+            CommentSerializer(comments, many=True).data,
+            status=status.HTTP_201_CREATED
+        )
+
+
 class UserView(APIView):
     """
     A class based view to list all the users.
@@ -186,11 +235,6 @@ class UserView(APIView):
     def get(request):
         """Gets all the users and if they are followed by
             the request user.
-
-        Parameters
-        ----------
-        request: GET request
-
         Returns
         -------
         response: json format users

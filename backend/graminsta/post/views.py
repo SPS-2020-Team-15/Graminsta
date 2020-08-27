@@ -22,7 +22,9 @@ from .services import (create_follow_relationship,
                        get_post_count,
                        get_fan_count,
                        get_following_count,
-                       get_timeline_posts)
+                       get_timeline_posts,
+                       add_mark,
+                       remove_mark)
 
 
 class FollowView(APIView):
@@ -285,3 +287,69 @@ class UserView(APIView):
         context = {"request_user": request.user}
         users = get_user_model().objects.all()
         return Response(UserSerializer(users, many=True, context=context).data)
+
+
+class AddMarkView(APIView):
+    """
+    A class based view to add mark
+    """
+    @staticmethod
+    def get(request):
+        """
+        Add mark on user and content
+
+        Parameters
+        ----------
+        request: json format
+            Data containing post_id
+
+        Returns
+        -------
+        response: json format post
+        """
+        user = request.user
+        post_id = request.data.get("post_id")
+
+        is_added, post = add_mark(user, post_id)
+        if is_added:
+            return Response(
+                PostSerializer(post).data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            PostSerializer(post).data,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class RemoveMarkView(APIView):
+    """
+    A class based view to remove mark
+    """
+    @staticmethod
+    def get(request):
+        """
+        Remove mark on user and content
+
+        Parameters
+        ----------
+        request: json format
+            Data containing post_id
+
+        Returns
+        -------
+        response: json format post
+        """
+        user = request.user
+        post_id = request.data.get("post_id")
+
+        is_removed, post = remove_mark(user, post_id)
+        if is_removed:
+            return Response(
+                PostSerializer(post).data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            PostSerializer(post).data,
+            status=status.HTTP_400_BAD_REQUEST
+        )

@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       );
       return false;
     }
+    http.setAuthToken(token);
     return true;
   }
 

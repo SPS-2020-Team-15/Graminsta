@@ -38,6 +38,7 @@ class Comment(models.Model):
     """
     publisher = models.ForeignKey(auth_models.User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 

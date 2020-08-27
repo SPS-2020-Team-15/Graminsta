@@ -6,6 +6,7 @@ from .models import (FollowRelationship,
                      Post,
                      Comment)
 
+
 admin.site.register(FollowRelationship)
 admin.site.register(Post)
 admin.site.register(Comment)

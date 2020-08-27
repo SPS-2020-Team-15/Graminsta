@@ -25,7 +25,9 @@ SECRET_KEY = '&r)j0uf7(4wzdw$h9-dguetx3d@-(&oixmswm%)ikly(w=nu-%'
 DEBUG = True
 
 # Root path for resources uploaded
-MEDIA_ROOT = "media/"
+MEDIA_URL = "media/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ALLOWED_HOSTS = ['*', ]
 

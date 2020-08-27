@@ -8,8 +8,8 @@ from django.db.models import Q
 from .models import Post, FollowRelationship, Comment
 
 
-def create_post(publisher_id, description, img, mention_user_ids):
-    """Create a Post in datebase.
+def create_post(publisher_id, description, img, mention_user_ids, shared_mode):
+    """Create a Post in database.
 
     Parameters
     ----------
@@ -31,13 +31,25 @@ def create_post(publisher_id, description, img, mention_user_ids):
         publisher=publisher,
         description=description,
         img=img,
+        shared_mode=shared_mode
     )
 
     user_ids = mention_user_ids.split(",")
-    users = get_user_model().objects.filter(pk__in=user_ids)
+    users = get_user_model().objects.filter(username__in=user_ids)
     post.mention_user.set(users)
     post.save()
     return post
+
+
+def get_all_post():
+    """Get all posts in database
+
+    Returns
+    ---------------
+    posts: all posts in database
+    """
+    posts = Post.objects.all()
+    return posts
 
 
 def get_people_user_follows(user):

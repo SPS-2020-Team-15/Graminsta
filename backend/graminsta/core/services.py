@@ -4,15 +4,15 @@
 Services for core module.
 """
 
+from django.contrib.auth import authenticate, get_user_model, \
+    models as auth_models
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
-from django.contrib.auth import models as auth_models
 from .serializers import UserInfoSerializer
 from .models import UserInfo
 
 
 def create_userinfo(validated_data):
-    """Create or update a UserInfo in database.
+    """Create or update a Info in database.
 
     Parameters
     ----------
@@ -34,6 +34,18 @@ def create_userinfo(validated_data):
         gender=validated_data.pop('gender')
     )
     return user_info
+
+
+def get_all_users():
+    """
+    Returns all user's in database.
+
+    Returns
+    --------------
+    all_users: The QuerySet containers all user object
+    """
+    all_users = get_user_model().objects.all()
+    return all_users
 
 
 def create_authentication_token(data):

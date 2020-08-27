@@ -3,15 +3,14 @@
 """
 Register and Login.
 """
-from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-from .serializers import UserSerializer, UserInfoSerializer
+from .serializers import UserInfoSerializer
 from .services import (create_userinfo,
                        create_authentication_token,
-                       get_user_info)
+                       get_user_info,
+                       get_all_users)
 
 
 class UserInfoRecordView(APIView):
@@ -38,20 +37,27 @@ class UserInfoRecordView(APIView):
             status=status.HTTP_201_CREATED
         )
 
-    @staticmethod
-    def get(request):
-        """Get all the users
+    def get(self, request):
+        """Get user's displayed name based on request's requirements
 
         Parameters
-        ----------
-        request: GET request
+        --------------
+        request: json format
+            Data containing request information, or None
 
         Returns
-        -------
-        response: json format users
+        --------------
+        response: json format
+            displayed name of all users that satisfy the requirements
         """
-        users = get_user_model().objects.all()
-        return Response(UserSerializer(users, many=True).data)
+        all_users = get_all_users()
+        all_users_name = []
+        separator = ","
+        for user in all_users:
+            all_users_name.append(user.first_name + " " + user.last_name)
+        return Response(
+            separator.join(all_users_name),
+            status=status.HTTP_200_OK)
 
 
 class UserLoginView(APIView):

@@ -1,4 +1,5 @@
 import 'package:Graminsta/config.dart';
+import 'package:Graminsta/post/post_widget.dart';
 import 'package:Graminsta/spec/sizing.dart';
 import 'package:Graminsta/spec/spacing.dart';
 import 'package:flutter/material.dart';
@@ -49,14 +50,14 @@ class _PersonalGalleryState extends State<PersonalGallery> {
                             Text(
                               snapshot.data[postCountKey].toString(),
                               textAlign: TextAlign.center,
-                              style: new TextStyle(
+                              style: TextStyle(
                                 fontSize: PersonalInfoTitleFontSize,
                               ),
                             ),
                             Text(
                               "Posts",
                               textAlign: TextAlign.center,
-                              style: new TextStyle(
+                              style: TextStyle(
                                   fontSize: PersonalInfoFontSize,
                                   color: Colors.grey),
                             ),
@@ -73,14 +74,14 @@ class _PersonalGalleryState extends State<PersonalGallery> {
                               Text(
                                 snapshot.data[followingCountKey].toString(),
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(
+                                style: TextStyle(
                                   fontSize: PersonalInfoTitleFontSize,
                                 ),
                               ),
                               Text(
                                 "Following",
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(
+                                style: TextStyle(
                                     fontSize: PersonalInfoFontSize,
                                     color: Colors.grey),
                               ),
@@ -98,14 +99,14 @@ class _PersonalGalleryState extends State<PersonalGallery> {
                               Text(
                                 snapshot.data[fanCountKey].toString(),
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(
+                                style: TextStyle(
                                   fontSize: PersonalInfoTitleFontSize,
                                 ),
                               ),
                               Text(
                                 "Fans",
                                 textAlign: TextAlign.center,
-                                style: new TextStyle(
+                                style: TextStyle(
                                     fontSize: PersonalInfoFontSize,
                                     color: Colors.grey),
                               ),
@@ -162,7 +163,11 @@ class _PersonalGalleryState extends State<PersonalGallery> {
   }
 
   Widget _listView(List postList) {
-    //Todo: build ListView
-    return Container();
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return postWidget(postList[index]);
+      },
+      itemCount: postList.length,
+    );
   }
 }

@@ -31,6 +31,7 @@ class FollowView(APIView):
     """
     A class based view to create and look up follow relationship.
     """
+
     @staticmethod
     def post(request):
         """Creates a new follow relationship
@@ -66,6 +67,7 @@ class FollowerView(APIView):
     """
     A class based view to look up followers .
     """
+
     @staticmethod
     def get(request):
         """Gets the request user's followers
@@ -86,6 +88,7 @@ class UnfollowView(APIView):
     """
     A class based view to delete follow relationship.
     """
+
     @staticmethod
     def post(request):
         """Deletes an existing follow relationship
@@ -106,6 +109,7 @@ class FollowingView(APIView):
     """
     A class based view to get any specific user's following people.
     """
+
     @staticmethod
     def get(request, user_id):
         """Gets the given user's following people
@@ -185,6 +189,7 @@ class TimelineView(APIView):
     """
     A class based view to show timeline.
     """
+
     @staticmethod
     def get(request):
         """Gets the given user's timeline
@@ -201,7 +206,7 @@ class TimelineView(APIView):
         context = {"request_user_id": request.user.id}
         posts = get_timeline_posts(request.user)
         return Response(
-            PostSerializer(posts, many=True,context=context).data,
+            PostSerializer(posts, many=True, context=context).data,
         )
 
 
@@ -235,6 +240,7 @@ class CommentView(APIView):
     """
     A class based view to manage comments.
     """
+
     @staticmethod
     def get(request, post_id):
         """
@@ -279,6 +285,7 @@ class UserView(APIView):
     """
     A class based view to list all the users.
     """
+
     @staticmethod
     def get(request):
         """Gets all the users and if they are followed by
@@ -298,6 +305,7 @@ class AddMarkView(APIView):
     """
     A class based view to add mark
     """
+
     @staticmethod
     def post(request):
         """
@@ -331,6 +339,7 @@ class RemoveMarkView(APIView):
     """
     A class based view to remove mark
     """
+
     @staticmethod
     def post(request):
         """

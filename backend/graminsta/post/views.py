@@ -200,8 +200,9 @@ class TimelineView(APIView):
         """
         context = {"request_user_id": request.user.id}
         posts = get_timeline_posts(request.user)
-        return Response(PostSerializer(posts, many=True,
-                                       context=context).data)
+        return Response(
+            PostSerializer(posts, many=True,context=context).data,
+        )
 
 
 class PersonalGalleryView(APIView):
@@ -288,7 +289,9 @@ class UserView(APIView):
         """
         context = {"request_user": request.user}
         users = get_user_model().objects.all()
-        return Response(UserSerializer(users, many=True, context=context).data)
+        return Response(
+            UserSerializer(users, many=True, context=context).data
+        )
 
 
 class AddMarkView(APIView):

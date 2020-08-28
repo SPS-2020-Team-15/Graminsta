@@ -15,7 +15,7 @@ class MarkService {
   static Future<bool> addMark(Post post) async {
     final response = await http.post("post/add-mark/",
       body: {
-        "post_id": post.id.toString(),
+        "post_id": '${post.id}',
       },
     );
     if (response.statusCode == 201) {
@@ -28,7 +28,7 @@ class MarkService {
   static Future<bool> removeMark(Post post) async {
     final response = await http.post("post/remove-mark/",
       body: {
-        "post_id": post.id.toString(),
+        "post_id": '${post.id}',
       },
     );
     if (response.statusCode == 201) {

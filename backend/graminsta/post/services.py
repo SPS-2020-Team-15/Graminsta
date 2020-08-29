@@ -122,7 +122,7 @@ def get_timeline_posts(request_user):
     and posts which mention or mark the request user.
     """
     following_people = get_people_user_follows(request_user)
-    hot_posts = Post.objects.order_by('kudos')[:10]
+    hot_posts = Post.objects.order_by('-kudos')[:10]
     posts = Post.objects.filter(Q(publisher__in=following_people) |
                                 Q(publisher=request_user) |
                                 Q(mention_user=request_user) |

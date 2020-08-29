@@ -17,11 +17,7 @@ class TimelineState extends State<TimelinePage> {
         builder: (BuildContext context, AsyncSnapshot<List<Post>> snapshot) {
           if (snapshot.hasData) {
             _posts = snapshot.data;
-            return ListView.separated(
-              separatorBuilder: (context, index) =>
-                  Divider(
-                    color: Colors.grey,
-                  ),
+            return ListView.builder(
               itemCount: _posts.length,
               itemBuilder: (BuildContext context, int index) {
                 return postWidget(_posts[index]);

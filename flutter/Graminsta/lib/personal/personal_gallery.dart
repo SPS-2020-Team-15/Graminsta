@@ -165,7 +165,7 @@ class _PersonalGalleryState extends State<PersonalGallery> {
   Widget _listView(List postList) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        return postWidget(postList[index]);
+        return PostWidget(postList[index]);
       },
       itemCount: postList.length,
     );

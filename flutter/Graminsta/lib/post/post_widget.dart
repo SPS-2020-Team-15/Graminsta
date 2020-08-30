@@ -2,6 +2,8 @@ import 'package:Graminsta/config.dart';
 import 'package:Graminsta/models/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:Graminsta/post/mark_service.dart';
 
 Widget postWidget(Post post) {
   String markedUser = post.markedUser.join(', ');
@@ -56,9 +58,10 @@ Widget postWidget(Post post) {
           child: Row(
             children: <Widget>[
               GestureDetector(
-                //Todo: add mark
-                onTap: () {},
-                child: Icon(Icons.favorite_border),
+                //Todo: refresh the widget after tap
+                onTap: post.isMarked ? () => {MarkService.removeMark(post)}:
+                    () => {MarkService.addMark(post)},
+                child: post.isMarked ? Icon(Icons.favorite):Icon(Icons.favorite_border),
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(4, 0, 0, 0),

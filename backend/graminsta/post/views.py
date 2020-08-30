@@ -30,6 +30,7 @@ class FollowView(APIView):
     """
     A class based view to create and look up follow relationship.
     """
+
     @staticmethod
     def post(request):
         """Creates a new follow relationship
@@ -65,6 +66,7 @@ class FollowerView(APIView):
     """
     A class based view to look up followers .
     """
+
     @staticmethod
     def get(request):
         """Gets the request user's followers
@@ -85,6 +87,7 @@ class UnfollowView(APIView):
     """
     A class based view to delete follow relationship.
     """
+
     @staticmethod
     def post(request):
         """Deletes an existing follow relationship
@@ -105,6 +108,7 @@ class FollowingView(APIView):
     """
     A class based view to get any specific user's following people.
     """
+
     @staticmethod
     def get(request, user_id):
         """Gets the given user's following people
@@ -179,6 +183,7 @@ class TimelineView(APIView):
     """
     A class based view to show timeline.
     """
+
     @staticmethod
     def get(request):
         """Gets the given user's timeline
@@ -192,8 +197,11 @@ class TimelineView(APIView):
         response: json format Posts that should be
             displayed at the given user's timeline
         """
+        context = {"request_user_id": request.user.id}
         posts = get_timeline_posts(request.user)
-        return Response(PostSerializer(posts, many=True).data)
+        return Response(
+            PostSerializer(posts, many=True, context=context).data,
+        )
 
 
 class PersonalGalleryView(APIView):
@@ -226,6 +234,7 @@ class CommentView(APIView):
     """
     A class based view to manage comments.
     """
+
     @staticmethod
     def get(request, post_id):
         """
@@ -271,6 +280,7 @@ class UserView(APIView):
     """
     A class based view to list all the users.
     """
+
     @staticmethod
     def get(request):
         """Gets all the users and if they are followed by
@@ -281,15 +291,18 @@ class UserView(APIView):
         """
         context = {"request_user": request.user}
         users = get_user_model().objects.all()
-        return Response(UserSerializer(users, many=True, context=context).data)
+        return Response(
+            UserSerializer(users, many=True, context=context).data
+        )
 
 
 class AddMarkView(APIView):
     """
     A class based view to add mark
     """
+
     @staticmethod
-    def get(request):
+    def post(request):
         """
         Add mark on user and content
 
@@ -321,8 +334,9 @@ class RemoveMarkView(APIView):
     """
     A class based view to remove mark
     """
+
     @staticmethod
-    def get(request):
+    def post(request):
         """
         Remove mark on user and content
 
@@ -336,7 +350,7 @@ class RemoveMarkView(APIView):
         response: json format post
         """
         user = request.user
-        post_id = request.data.get("post_id")
+        post_id = int(request.data.get("post_id"))
 
         is_removed, post = remove_mark(user, post_id)
         if is_removed:

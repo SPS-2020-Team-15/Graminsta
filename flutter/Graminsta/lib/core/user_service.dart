@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:Graminsta/models/user.dart';
+import 'package:Graminsta/models/post.dart';
 import 'package:Graminsta/service/http_service.dart';
 import 'package:Graminsta/models/list_user.dart';
 
@@ -50,5 +51,17 @@ Future<List<ListUser>> fetchFollowers() async {
         .toList();
   } else {
     throw Exception('Failed to load following people');
+  }
+}
+
+Future<List<Post>> fetchTimeline() async {
+  final response = await http.get("post/timeline/");
+  if (response.statusCode == 200) {
+    var responseJson = json.decode(response.body);
+    return (responseJson as List)
+        .map((p) => Post.fromJson(p))
+        .toList();
+  } else {
+    throw Exception('Failed to load timeline posts');
   }
 }

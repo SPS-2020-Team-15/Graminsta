@@ -21,20 +21,16 @@ class _PersonalGalleryState extends State<PersonalGallery> {
 
   _showFollowing() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => FollowingList(
-                  option: "following",
-                )));
+      context,
+      MaterialPageRoute(builder: (context) => FollowingList(option: "following")),
+    );
   }
 
   _showFans() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => FollowingList(
-                  option: "follower",
-                )));
+      context,
+      MaterialPageRoute(builder: (context) => FollowingList(option: "follower")),
+    );
   }
 
   @override

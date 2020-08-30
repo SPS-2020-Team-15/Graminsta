@@ -7,8 +7,10 @@ class Post {
   final List markedUser;
   final List mentionUser;
   final String timeStamp;
+  bool isMarked;
 
-  Post({this.id, this.publisher, this.description, this.img, this.markedUser, this.mentionUser, this.timeStamp});
+  Post({this.id, this.publisher, this.description, this.img, this.markedUser,
+    this.mentionUser, this.timeStamp, this.isMarked});
 
   factory Post.fromJson(Map<String, Object> json) {
     return
@@ -19,7 +21,8 @@ class Post {
         img: json['img'],
         markedUser: json['marked_username'],
         mentionUser: json['mention_username'],
-        timeStamp: json['time_stamp']
+        timeStamp: json['time_stamp'],
+        isMarked: json['is_marked'],
       );
   }
 }

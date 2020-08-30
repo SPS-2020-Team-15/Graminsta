@@ -8,6 +8,7 @@ import 'package:Graminsta/personal/personal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/service/http_service.dart';
 import 'package:Graminsta/post/follow_user.dart';
+import 'package:Graminsta/post/timeline.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
       'Index 0: Home',
       style: optionStyle,
     ), //change this into the timeline page.
+    TimelinePage(),
     PersonalPage(),
     UsersList(),
   ];

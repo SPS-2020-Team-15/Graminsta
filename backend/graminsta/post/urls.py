@@ -23,6 +23,6 @@ urlpatterns = [
     path('comment/', CommentView.as_view(), name="add_comment"),
     path('comment/<post_id>/', CommentView.as_view(), name='comment'),
     path('personal/', PersonalGalleryView.as_view(), name='personal_gallery'),
-    path('add—mark/', AddMarkView.as_view(), name='add_mark'),
+    path('add-mark/', AddMarkView.as_view(), name='add_mark'),
     path('remove-mark/', RemoveMarkView.as_view(), name='remove_mark')
 ]

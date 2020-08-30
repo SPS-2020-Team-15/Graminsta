@@ -1,17 +1,13 @@
 """
 Service functions for post module
 """
-import time
-import os
-import base64
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django import forms
 from django.db.models import Q
 from .models import Post, FollowRelationship, Comment
 
 
-def create_post(publisher, description, imgContent, mention_user_ids,
+def create_post(publisher, description, img_content, mention_user_ids,
                 shared_mode):
     """Create a Post in database.
 
@@ -32,7 +28,7 @@ def create_post(publisher, description, imgContent, mention_user_ids,
     post = Post.objects.create(
         publisher=publisher,
         description=description,
-        img=imgContent,
+        img=img_content,
         shared_mode=shared_mode
     )
 
@@ -54,7 +50,7 @@ def get_all_post():
     return posts
 
 
-def get_post_given_postId(post_id):
+def get_post_given_post_id(post_id):
     """
     Get post given postId
     """

@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 """views.py"""
 
-import json
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,8 +14,7 @@ from .services import (create_follow_relationship,
                        get_people_user_follows,
                        get_people_following_user,
                        create_post,
-                       get_all_post,
-                       get_post_given_postId,
+                       get_post_given_post_id,
                        add_comment,
                        get_all_comments,
                        get_all_personal_post,
@@ -26,7 +24,6 @@ from .services import (create_follow_relationship,
                        get_timeline_posts,
                        add_mark,
                        remove_mark)
-from .models import Comment, Post
 
 
 class FollowView(APIView):
@@ -171,7 +168,7 @@ class PostRecordView(APIView):
         response: json format
             All posts
         """
-        post = get_post_given_postId(int(post_id))
+        post = get_post_given_post_id(int(post_id))
         return Response(
             PostSerializer(post).data,
             status=status.HTTP_200_OK

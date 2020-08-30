@@ -46,6 +46,7 @@ Widget postWidget(Post post) {
             ],
           ),
         ),
+        // TODO
         Image.network(
           baseUrl + post.img,
           fit: BoxFit.cover,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as baseHttp;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Graminsta/constants.dart';
+import 'package:dio/dio.dart';
 
 // Class that handles HTTP requests.
 class _HttpService {
@@ -69,6 +70,24 @@ class _HttpService {
         headers: headers,
         body: body,
         encoding: encoding ??= Utf8Codec(),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return response;
+  }
+
+  Future<Response> postForm(String url, FormData form) async {
+    final dio = new Dio();
+    Map<String, String> headers = {};
+    headers.addAll(_globalHeaders);
+    Response response;
+
+    try {
+      response = await dio.post(
+        url,
+        data: form,
+        options: Options(contentType: 'multipart/form-data', headers: headers),
       );
     } catch (e) {
       debugPrint(e.toString());

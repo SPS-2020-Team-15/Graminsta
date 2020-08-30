@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:Graminsta/models/user.dart';
 import 'package:Graminsta/service/http_service.dart';
 import 'package:Graminsta/models/list_user.dart';
-import 'package:flutter/cupertino.dart';
 
 ///A function that returns a list of all the users.
 Future<List<ListUser>> fetchUsers() async {

@@ -1,14 +1,18 @@
 """
 Service functions for post module
 """
-
+import time
+import os
+import base64
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django import forms
 from django.db.models import Q
 from .models import Post, FollowRelationship, Comment
 
 
-def create_post(publisher_id, description, img, mention_user_ids, shared_mode):
+def create_post(publisher, description, imgContent, mention_user_ids,
+                shared_mode):
     """Create a Post in database.
 
     Parameters
@@ -24,13 +28,11 @@ def create_post(publisher_id, description, img, mention_user_ids, shared_mode):
     -------
     post: a successfully created post object
     """
-    # Get publisher object with publisher_name
-    publisher = get_user_model().objects.get(pk=publisher_id)
     # Get the default image
     post = Post.objects.create(
         publisher=publisher,
         description=description,
-        img=img,
+        img=imgContent,
         shared_mode=shared_mode
     )
 
@@ -50,6 +52,14 @@ def get_all_post():
     """
     posts = Post.objects.all()
     return posts
+
+
+def get_post_given_postId(post_id):
+    """
+    Get post given postId
+    """
+    post = Post.objects.get(pk=post_id)
+    return post
 
 
 def get_people_user_follows(user):

@@ -16,6 +16,7 @@ from .services import (create_follow_relationship,
                        get_people_following_user,
                        create_post,
                        get_all_post,
+                       get_post_given_postId,
                        add_comment,
                        get_all_comments,
                        get_all_personal_post,
@@ -25,6 +26,7 @@ from .services import (create_follow_relationship,
                        get_timeline_posts,
                        add_mark,
                        remove_mark)
+from .models import Comment, Post
 
 
 class FollowView(APIView):
@@ -148,36 +150,31 @@ class PostRecordView(APIView):
 
         # _ is not allowed in header key
         # TODO: get user from request
-        publisher_id = int(request.data["publisher_id"])
-        shared_mode = request.data["shared_mode"]
-        description = request.data["description"]
-        img = request.data["img"]
+        shared_mode = request.data.getlist("shared_mode")[0]
+        description = request.data.getlist("description")[0]
+        img = request.data.getlist("file")[0]
 
         mention_user = request.data["mention_usernames"]
-        post = create_post(publisher_id, description,
+        post = create_post(request.user, description,
                            img, mention_user, shared_mode)
         return Response(
             PostSerializer(post).data,
             status=status.HTTP_201_CREATED
         )
 
-    def get(self, request):
+    def get(self, request, post_id):
         """
-        Get All posts
+        Get certain post
 
         Returns
         ------------
         response: json format
             All posts
         """
-        posts = get_all_post()
-        body = ""
-        for post in posts:
-            body += json.dumps(PostSerializer(post).data)
-
+        post = get_post_given_postId(int(post_id))
         return Response(
-            body,
-            status=status.HTTP_201_CREATED
+            PostSerializer(post).data,
+            status=status.HTTP_200_OK
         )
 
 
@@ -247,6 +244,7 @@ class CommentView(APIView):
         response: json format
             Comments that the post owns
         """
+
         comments = get_all_comments(post_id=post_id)
         return Response(CommentSerializer(comments, many=True).data)
 
@@ -262,7 +260,7 @@ class CommentView(APIView):
         """
         user = request.user
         comment = request.data.get('comment')
-        post_id = request.data.get("post_id")
+        post_id = request.data.get('post_id')
         comment = add_comment(post_id, user, comment)
 
         comments = get_all_comments(post_id=post_id)

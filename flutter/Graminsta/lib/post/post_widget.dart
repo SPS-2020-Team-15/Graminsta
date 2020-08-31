@@ -2,6 +2,8 @@ import 'package:Graminsta/config.dart';
 import 'package:Graminsta/models/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:Graminsta/post/mark_service.dart';
 
 class PostWidget extends StatefulWidget {
   final Post post;
@@ -12,10 +14,33 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+  bool _isMarked = false;
+  int _kudos = 0;
+
+  void _removeMark(Post post) async {
+    final result = await MarkService.removeMark(post);
+    if (result == true) {
+      setState(() {
+        _isMarked = false;
+        _kudos--;
+      });
+    }
+  }
+
+  void _addMark(Post post) async {
+    final result = await MarkService.addMark(post);
+    if (result == true) {
+      setState(() {
+        _isMarked = true;
+        _kudos++;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String markedUser = widget.post.markedUser.join(', ');
-    markedUser = markedUser == "" ? "" : markedUser + " liked";
+    _isMarked = widget.post.isMarked;
+    _kudos = widget.post.kudos;
     String mentionUser = widget.post.mentionUser.join(' @');
     mentionUser = mentionUser == "" ? "" : " @" + mentionUser;
 
@@ -66,9 +91,13 @@ class _PostWidgetState extends State<PostWidget> {
             child: Row(
               children: <Widget>[
                 GestureDetector(
-                  //Todo: add mark
-                  onTap: () {},
-                  child: Icon(Icons.favorite_border),
+                  //Todo: refresh the widget after tap
+                  onTap: _isMarked
+                      ? () => _removeMark(widget.post)
+                      : () => _addMark(widget.post),
+                  child: _isMarked
+                      ? Icon(Icons.favorite)
+                      : Icon(Icons.favorite_border),
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
@@ -76,7 +105,7 @@ class _PostWidgetState extends State<PostWidget> {
                     //Todo: show marked userList
                     onTap: () {},
                     child: Text(
-                      markedUser,
+                      "$_kudos users liked",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey,

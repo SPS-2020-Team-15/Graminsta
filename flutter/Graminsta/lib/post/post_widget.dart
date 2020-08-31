@@ -1,5 +1,6 @@
 import 'package:Graminsta/config.dart';
 import 'package:Graminsta/models/post.dart';
+import 'package:Graminsta/post/follow_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,31 +17,56 @@ class PostWidget extends StatefulWidget {
 class _PostWidgetState extends State<PostWidget> {
   bool _isMarked = false;
   int _kudos = 0;
+  bool _isFollowing = false;
+
+  @override
+  void initState() {
+    _isMarked = widget.post.isMarked;
+    _kudos = widget.post.kudos;
+    _isFollowing = widget.post.isFollowing;
+    super.initState();
+  }
 
   void _removeMark(Post post) async {
     final result = await MarkService.removeMark(post);
     if (result == true) {
-      setState(() {
-        _isMarked = false;
-        _kudos--;
-      });
+      _isMarked = false;
+      _kudos--;
+      setState(() {});
     }
   }
 
   void _addMark(Post post) async {
     final result = await MarkService.addMark(post);
     if (result == true) {
-      setState(() {
-        _isMarked = true;
-        _kudos++;
-      });
+      _isMarked = true;
+      _kudos++;
+      setState(() {});
+    }
+  }
+
+  void _unfollow(int id) async {
+    final result = await UnfollowService.unfollow(id);
+    print(result);
+    if (result == true) {
+      _isFollowing = false;
+      setState(() {});
+    }
+  }
+
+  void _follow(int id) async {
+    final result = await FollowService.follow(id);
+    print(result);
+    if (result == true) {
+      _isFollowing = true;
+      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _isMarked = widget.post.isMarked;
-    _kudos = widget.post.kudos;
+    String markedUser = widget.post.markedUser.join(', ');
+    markedUser = markedUser == "" ? "" : markedUser + " liked";
     String mentionUser = widget.post.mentionUser.join(' @');
     mentionUser = mentionUser == "" ? "" : " @" + mentionUser;
 
@@ -79,6 +105,15 @@ class _PostWidgetState extends State<PostWidget> {
                     ],
                   ),
                 ),
+                Expanded(
+                  child: SizedBox(),
+                ),
+                MaterialButton(
+                  child: _isFollowing ? Text("Unfollow") : Text("Follow"),
+                  onPressed: _isFollowing
+                      ? () => _unfollow(widget.post.publisherId)
+                      : () => _follow(widget.post.publisherId),
+                )
               ],
             ),
           ),
@@ -91,7 +126,6 @@ class _PostWidgetState extends State<PostWidget> {
             child: Row(
               children: <Widget>[
                 GestureDetector(
-                  //Todo: refresh the widget after tap
                   onTap: _isMarked
                       ? () => _removeMark(widget.post)
                       : () => _addMark(widget.post),
@@ -101,9 +135,9 @@ class _PostWidgetState extends State<PostWidget> {
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
-                  child: GestureDetector(
-                    //Todo: show marked userList
-                    onTap: () {},
+                  child: Tooltip(
+                    preferBelow:false,
+                    message: markedUser,
                     child: Text(
                       "$_kudos users liked",
                       style: TextStyle(

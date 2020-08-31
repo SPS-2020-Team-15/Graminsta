@@ -43,10 +43,6 @@ class _HomePageState extends State<HomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ), //change this into the timeline page.
     TimelinePage(),
     PersonalPage(),
     UsersList(),

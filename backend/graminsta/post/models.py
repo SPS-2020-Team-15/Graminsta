@@ -15,7 +15,7 @@ class Post(models.Model):
     description = models.TextField()
     lon = models.FloatField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
-    img = models.ImageField(settings.MEDIA_ROOT)
+    img = models.ImageField(upload_to=settings.MEDIA_URL)
     marked_user = models.ManyToManyField(auth_models.User,
                                          related_name="marking_users",
                                          blank=True, null=True)

@@ -1,6 +1,10 @@
-import 'package:http/http.dart' as http;
 import 'package:Graminsta/post/mentionUserWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:Graminsta/service/http_service.dart';
+import 'package:Graminsta/post/pickImageWidget.dart';
+import 'package:dio/dio.dart';
+import 'dart:io';
+
 import '../setting/setting.dart' as setting;
 
 enum AccessControlType {
@@ -37,6 +41,9 @@ class CreatePostWidget extends StatefulWidget {
 class _CreatePostWidgetState extends State<CreatePostWidget> {
   AccessControlType accessControl = AccessControlType.public;
   final myController = TextEditingController();
+  bool photoUploaded = false;
+  File imageFile;
+  String mentionUserTitle = "Mention:";
   String mentionedUser = "";
 
   @override
@@ -46,11 +53,15 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
     super.dispose();
   }
 
+  String generateImageFileName(String originalFileName) {
+    String extension = originalFileName.split('/').last.split('.').last;
+    return new DateTime.now().toString() + "." + extension;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    String mentionUserTitle = "Mention:";
 
     return new Scaffold(
       appBar: AppBar(
@@ -62,21 +73,26 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 color: Colors.white,
               ),
               onPressed: () async {
-                final http.Response response = await http.post(
-                    setting.ip_dev + "post/",
-                    headers: <String, String>{},
-                    body: {
-                      // TODO: Replace with token user
-                      "publisher_id": "8",
-                      "description": myController.text,
-                      "mention_usernames": mentionedUser,
-                      "img": "this is my img",
-                      "shared_mode": accessControl.toHumanReadableString()
-                    });
+                Map<String, dynamic> data = {};
+                data["description"] = myController.text;
+                data["mention_usernames"] = mentionedUser;
+                data["shared_mode"] = accessControl.toHumanReadableString();
+                Map<String, MultipartFile> fileMap = {};
+                fileMap["file"] = MultipartFile(
+                    imageFile.openRead(), await imageFile.length(),
+                    filename: generateImageFileName(imageFile.path));
+
+                data.addAll(fileMap);
+                var formData = FormData.fromMap(data);
+
+                final response =
+                    await http.postForm(setting.ip_dev + "post/", formData);
 
                 if (response.statusCode != 201) {
                   throw Exception('Failed to createPost');
                 }
+
+                Navigator.pop(context);
               })
         ],
       ),
@@ -97,14 +113,38 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
           Container(
             margin: EdgeInsets.only(left: width / 20),
             child: Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                height: width / 4,
-                width: width / 4,
-                color: Color.fromRGBO(220, 220, 220, 0.8),
-                child: Icon(Icons.add_a_photo),
-              ),
-            ),
+                alignment: Alignment.centerLeft,
+                child: Container(
+                    height: width / 4,
+                    width: width / 4,
+                    color: Color.fromRGBO(220, 220, 220, 0.8),
+                    child: Container(
+                      height: width / 4,
+                      width: width / 4,
+                      color: Color.fromRGBO(220, 220, 220, 0.8),
+                      child: photoUploaded
+                          ? Image.file(
+                              imageFile,
+                              width: width / 4,
+                              height: width / 4,
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.add_a_photo),
+                              onPressed: () async {
+                                File selectedImage = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PickImageWidget(),
+                                  ),
+                                );
+
+                                setState(() {
+                                  imageFile = selectedImage;
+                                  photoUploaded = true;
+                                });
+                              },
+                            ),
+                    ))),
           ),
           Container(
             margin: EdgeInsets.only(top: height / 10),

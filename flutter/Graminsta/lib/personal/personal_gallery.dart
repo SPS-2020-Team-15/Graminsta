@@ -1,4 +1,5 @@
 import 'package:Graminsta/config.dart';
+import 'package:Graminsta/post/postDetailsWidget.dart';
 import 'package:Graminsta/post/post_widget.dart';
 import 'package:Graminsta/spec/sizing.dart';
 import 'package:Graminsta/spec/spacing.dart';
@@ -13,12 +14,10 @@ class PersonalGallery extends StatefulWidget {
 }
 
 class _PersonalGalleryState extends State<PersonalGallery> {
-
   Future<Map<String, Object>> _getData() async {
     final list = await getPersonalGallery();
     return list;
   }
-
 
   _showFollowing() {
     Navigator.push(
@@ -38,7 +37,8 @@ class _PersonalGalleryState extends State<PersonalGallery> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _getData(),
-      builder: (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, Object>> snapshot) {
         if (snapshot.hasData) {
           return Flexible(
             child: DefaultTabController(
@@ -169,7 +169,19 @@ class _PersonalGalleryState extends State<PersonalGallery> {
   Widget _listView(List postList) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        return postWidget(postList[index]);
+        return new GestureDetector(
+            onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostDetailsWidget(),
+                      settings: RouteSettings(
+                        arguments: postList[index].id,
+                      ),
+                    ),
+                  )
+                },
+            child: postWidget(postList[index]));
       },
       itemCount: postList.length,
     );

@@ -44,7 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
         ------------
         obj: the post object which will be serialized
         """
-        marked = obj.marked_user.filter(id=obj.publisher.id)
+        marked = obj.marked_user.filter(id=self.context.get('request_user_id'))
         return marked.exists()
 
     def get_is_following(self, obj):
@@ -71,7 +71,7 @@ class PostSerializer(serializers.ModelSerializer):
                   "time_stamp",
                   "marked_username",
                   "mention_username",
-                  "is_marked", 
+                  "is_marked",
                   "kudos",
                   "is_following"]
 

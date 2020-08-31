@@ -30,36 +30,38 @@ class _PostWidgetState extends State<PostWidget> {
   void _removeMark(Post post) async {
     final result = await MarkService.removeMark(post);
     if (result == true) {
-      _isMarked = false;
-      _kudos--;
-      setState(() {});
+      setState(() {
+        _isMarked = false;
+        _kudos--;
+      });
     }
   }
 
   void _addMark(Post post) async {
     final result = await MarkService.addMark(post);
     if (result == true) {
-      _isMarked = true;
-      _kudos++;
-      setState(() {});
+      setState(() {
+        _isMarked = true;
+        _kudos++;
+      });
     }
   }
 
   void _unfollow(int id) async {
     final result = await UnfollowService.unfollow(id);
-    print(result);
     if (result == true) {
-      _isFollowing = false;
-      setState(() {});
+      setState(() {
+        _isFollowing = false;
+      });
     }
   }
 
   void _follow(int id) async {
     final result = await FollowService.follow(id);
-    print(result);
     if (result == true) {
-      _isFollowing = true;
-      setState(() {});
+      setState(() {
+        _isFollowing = true;
+      });
     }
   }
 
@@ -136,7 +138,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Container(
                   padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
                   child: Tooltip(
-                    preferBelow:false,
+                    preferBelow: false,
                     message: markedUser,
                     child: Text(
                       "$_kudos users liked",

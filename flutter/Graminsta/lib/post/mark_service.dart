@@ -25,7 +25,6 @@ class MarkService {
   }
 
   static Future<bool> removeMark(Post post) async {
-    print(post);
     final response = await http.post("post/remove-mark/",
       body: {
         "post_id": '${post.id}',

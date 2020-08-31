@@ -12,6 +12,7 @@ from .views import (PostRecordView, FollowView, FollowerView, UnfollowView,
 app_name = 'post'
 urlpatterns = [
     path('', PostRecordView.as_view(), name='post'),
+    path('<post_id>', PostRecordView.as_view(), name='post'),
     path('users/', UserView.as_view(), name='users'),
     path('follow/', FollowView.as_view(), name='follow'),
     path('follower/', FollowerView.as_view(), name='follower'),

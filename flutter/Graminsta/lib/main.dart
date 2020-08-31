@@ -1,5 +1,7 @@
+import 'package:Graminsta/post/addCommentWidget.dart';
 import 'package:Graminsta/post/createPostWidget.dart';
 import 'package:Graminsta/post/mentionUserWidget.dart';
+import 'package:Graminsta/post/postDetailsWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:Graminsta/auth/auth.dart';
 import 'package:Graminsta/personal/personal.dart';
@@ -17,11 +19,13 @@ class MyApp extends StatelessWidget {
       title: "Graminsta",
       initialRoute: '/home',
       routes: {
-        '/create': (context) => CreatePostWidget(),
+        '/createPost': (context) => CreatePostWidget(),
         '/mention': (context) => MentionUserWidget(),
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),
         '/users': (context) => UsersList(),
+        '/details': (context) => PostDetailsWidget(),
+        '/addComment': (context) => AddCommentWidget(),
       },
     );
   }
@@ -39,8 +43,12 @@ class _HomePageState extends State<HomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ), //change this into the timeline page.
     TimelinePage(),
-    PersonalPage(), 
+    PersonalPage(),
     UsersList(),
   ];
 
@@ -106,7 +114,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Add()),
+                  MaterialPageRoute(builder: (context) => CreatePostWidget()),
                 );
               },
               child: Icon(Icons.add),
@@ -135,20 +143,6 @@ class _HomePageState extends State<HomePage> {
         }
         return Scaffold();
       },
-    );
-  }
-}
-
-class Add extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Post"),
-      ),
-      body: Center(
-        child: Text("Add Post"), //change this into the create new post page.
-      ),
     );
   }
 }

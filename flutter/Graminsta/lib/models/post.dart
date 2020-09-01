@@ -12,13 +12,22 @@ class Post {
   int kudos;
   bool isFollowing;
 
-  Post({this.id, this.publisher, this.publisherId, this.description, this.img,
-    this.markedUser, this.mentionUser, this.timeStamp, this.isMarked,
-    this.kudos, this.isFollowing});
+  Post({
+    this.id,
+    this.publisher,
+    this.publisherId,
+    this.description,
+    this.img,
+    this.markedUser,
+    this.mentionUser,
+    this.timeStamp,
+    this.isMarked,
+    this.kudos,
+    this.isFollowing,
+  });
 
   factory Post.fromJson(Map<String, Object> json) {
-    return
-      Post(
+    return Post(
         id: json['id'],
         publisher: json['publisher_username'],
         publisherId: json['publisher'],
@@ -29,7 +38,6 @@ class Post {
         timeStamp: json['time_stamp'],
         isMarked: json['is_marked'],
         kudos: json['kudos'],
-        isFollowing: json["is_following"]
-      );
+        isFollowing: json["is_following"]);
   }
 }

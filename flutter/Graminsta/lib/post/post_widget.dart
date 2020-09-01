@@ -67,10 +67,14 @@ class _PostWidgetState extends State<PostWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String markedUser = widget.post.markedUser.join(', ');
-    markedUser = markedUser == "" ? "" : markedUser + " liked";
-    String mentionUser = widget.post.mentionUser.join(' @');
-    mentionUser = mentionUser == "" ? "" : " @" + mentionUser;
+    var markedUser = widget.post.markedUser.join(', ');
+    if (markedUser.isNotEmpty) {
+      markedUser += " liked";
+    }
+    var mentionUser = widget.post.mentionUser.join(' @');
+    if (mentionUser.isNotEmpty) {
+      mentionUser = " @$mentionUser";
+    }
 
     return Container(
       child: Column(

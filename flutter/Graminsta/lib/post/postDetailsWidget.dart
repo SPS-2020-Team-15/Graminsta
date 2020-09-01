@@ -56,7 +56,7 @@ class _PostDetailsState extends State<PostDetailsWidget> {
                 final post = Post.fromJson(json.decode(postDetails));
 
                 List<Widget> widgets = [];
-                widgets.add(postWidget(post));
+                widgets.add(PostWidget(post));
 
                 for (int i = 0; i < commentsJson.length; ++i) {
                   String commentContent = commentsJson[i]["content"];

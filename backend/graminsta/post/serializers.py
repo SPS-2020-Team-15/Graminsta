@@ -15,6 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
     mention_username = serializers.SerializerMethodField()
     time_stamp = serializers.SerializerMethodField()
     is_marked = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
 
     @classmethod
     def get_marked_username(cls, obj):
@@ -46,6 +47,17 @@ class PostSerializer(serializers.ModelSerializer):
         marked = obj.marked_user.filter(id=self.context.get('request_user_id'))
         return marked.exists()
 
+    def get_is_following(self, obj):
+        """
+        Parameters
+        ------------
+        obj: the post object which will be serialized
+        """
+        relationship = FollowRelationship.objects. \
+            filter(from_user=self.context.get('request_user_id'),
+                   to_user=obj.publisher)
+        return relationship.exists()
+
     class Meta:
         """
         Meta Information
@@ -59,7 +71,9 @@ class PostSerializer(serializers.ModelSerializer):
                   "time_stamp",
                   "marked_username",
                   "mention_username",
-                  "is_marked", ]
+                  "is_marked",
+                  "kudos",
+                  "is_following"]
 
 
 class FollowSerializer(serializers.ModelSerializer):

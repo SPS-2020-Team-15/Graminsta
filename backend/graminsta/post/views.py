@@ -219,7 +219,8 @@ class PersonalGalleryView(APIView):
             following count and fans count
         """
         posts = get_all_personal_post(request.user)
-        result = PostSerializer(posts, many=True).data
+        context = {"request_user_id": request.user.id}
+        result = PostSerializer(posts, many=True, context=context).data
         post_count = get_post_count(request.user)
         following_count = get_following_count(request.user)
         fan_count = get_fan_count(request.user)

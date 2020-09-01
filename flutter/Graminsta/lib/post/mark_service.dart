@@ -1,6 +1,5 @@
 import 'package:Graminsta/service/http_service.dart';
 import 'package:Graminsta/models/post.dart';
-import 'package:flutter/cupertino.dart';
 
 class MarkService {
   static MarkService _instance;

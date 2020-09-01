@@ -20,7 +20,7 @@ class TimelineState extends State<TimelinePage> {
             return ListView.builder(
               itemCount: _posts.length,
               itemBuilder: (BuildContext context, int index) {
-                return postWidget(_posts[index]);
+                return PostWidget(_posts[index]);
               },
             );
           }

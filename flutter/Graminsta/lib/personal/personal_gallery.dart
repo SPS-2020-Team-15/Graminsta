@@ -181,7 +181,7 @@ class _PersonalGalleryState extends State<PersonalGallery> {
                     ),
                   )
                 },
-            child: postWidget(postList[index]));
+            child: PostWidget(postList[index]));
       },
       itemCount: postList.length,
     );

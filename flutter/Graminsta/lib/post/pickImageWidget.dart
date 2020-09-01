@@ -12,41 +12,15 @@ class PickImageWidget extends StatefulWidget {
 }
 
 class _PickImageWidgetState extends State<PickImageWidget> {
-  Future<File> imageFile;
+  final picker = ImagePicker();
   File selectedImage;
 
-  pickImageFromGallery(ImageSource source) {
-    setState(() {
-      // ignore: deprecated_member_use
-      imageFile = ImagePicker.pickImage(source: source);
-    });
-  }
+  Future pickImageFromGallery(source) async {
+    final pickedFile = await picker.getImage(source: source);
 
-  Widget showImage() {
-    return FutureBuilder<File>(
-      future: imageFile,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          selectedImage = snapshot.data;
-          return Image.file(
-            selectedImage,
-            width: 300,
-            height: 300,
-          );
-        } else if (snapshot.error != null) {
-          return const Text(
-            'Error Picking Image',
-            textAlign: TextAlign.center,
-          );
-        } else {
-          return const Text(
-            'No Image Selected',
-            textAlign: TextAlign.center,
-          );
-        }
-      },
-    );
+    setState(() {
+      selectedImage = File(pickedFile.path);
+    });
   }
 
   @override
@@ -67,7 +41,11 @@ class _PickImageWidgetState extends State<PickImageWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            showImage(),
+            Container(
+              child: selectedImage == null
+                  ? Text('No image selected.')
+                  : Image.file(selectedImage, width: 300, height: 300),
+            ),
             RaisedButton(
               child: Text("Select Image from Gallery"),
               onPressed: () {

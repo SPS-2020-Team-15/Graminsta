@@ -112,6 +112,8 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(builder: (context) => CreatePostWidget()),
                 );
+
+                setState(() {});
               },
               child: Icon(Icons.add),
               backgroundColor: Colors.blue,

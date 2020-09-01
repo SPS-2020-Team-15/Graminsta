@@ -5,7 +5,7 @@ import 'package:Graminsta/post/pickImageWidget.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 
-import '../setting/setting.dart' as setting;
+import '../config.dart' as config;
 
 enum AccessControlType {
   public,
@@ -86,7 +86,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                 var formData = FormData.fromMap(data);
 
                 final response =
-                    await http.postForm(setting.ip_dev + "post/", formData);
+                    await http.postForm(config.baseUrl + "post/", formData);
 
                 if (response.statusCode != 201) {
                   throw Exception('Failed to createPost');

@@ -60,25 +60,11 @@ class _PostDetailsState extends State<PostDetailsWidget> {
 
                 for (int i = 0; i < commentsJson.length; ++i) {
                   String commentContent = commentsJson[i]["content"];
-                  String username = '${commentsJson[i]["publisher"]["first_name"]} '
-                      '${commentsJson[i]["publisher"]["last_name"]}: ';
 
                   widgets.add(
                     new ListTile(
                       leading: new Icon(Icons.comment),
-                      title: Text.rich(
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: username,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            TextSpan(
-                              text: commentContent,
-                            ),
-                          ],
-                        ),
-                      ),
+                      title: new Text(commentContent),
                     ),
                   );
                 }

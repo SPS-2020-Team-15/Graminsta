@@ -70,7 +70,8 @@ class _MentionUserWidgetState extends State<MentionUserWidget> {
                             });
                           })));
                 }
-                return new Column(children: widgets);
+                return SingleChildScrollView(
+                    child: new Column(children: widgets));
               } else {
                 return new CircularProgressIndicator();
               }

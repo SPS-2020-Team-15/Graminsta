@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../setting/setting.dart' as setting;
+import '../config.dart' as config;
 
 class MentionUserWidget extends StatefulWidget {
   MentionUserWidget({Key key}) : super(key: key);
@@ -79,7 +79,7 @@ class _MentionUserWidgetState extends State<MentionUserWidget> {
 
   Future<List<String>> getUsername() async {
     final http.Response response =
-        await http.get(setting.ip_dev + "core/user/");
+        await http.get(config.baseUrl + "core/user/");
 
     if (response.statusCode == 200) {
       return response.body.split(",");

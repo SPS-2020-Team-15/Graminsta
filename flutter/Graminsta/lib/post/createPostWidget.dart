@@ -96,118 +96,121 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
               })
         ],
       ),
-      body: new Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(8.0),
-            padding: EdgeInsets.only(bottom: 40.0),
-            child: TextField(
-              controller: myController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: "Describe your post",
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: new Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(bottom: 40.0),
+              child: TextField(
+                controller: myController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: "Describe your post",
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: width / 20),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                    height: width / 4,
-                    width: width / 4,
-                    color: Color.fromRGBO(220, 220, 220, 0.8),
-                    child: Container(
+            Container(
+              margin: EdgeInsets.only(left: width / 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
                       height: width / 4,
                       width: width / 4,
                       color: Color.fromRGBO(220, 220, 220, 0.8),
-                      child: photoUploaded
-                          ? Image.file(
-                              imageFile,
-                              width: width / 4,
-                              height: width / 4,
-                            )
-                          : IconButton(
-                              icon: Icon(Icons.add_a_photo),
-                              onPressed: () async {
-                                File selectedImage = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PickImageWidget(),
-                                  ),
-                                );
+                      child: Container(
+                        height: width / 4,
+                        width: width / 4,
+                        color: Color.fromRGBO(220, 220, 220, 0.8),
+                        child: photoUploaded
+                            ? Image.file(
+                                imageFile,
+                                width: width / 4,
+                                height: width / 4,
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.add_a_photo),
+                                onPressed: () async {
+                                  File selectedImage = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PickImageWidget(),
+                                    ),
+                                  );
 
-                                setState(() {
-                                  imageFile = selectedImage;
-                                  photoUploaded = true;
-                                });
-                              },
-                            ),
-                    ))),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: height / 10),
-            child: new Column(
-              children: <Widget>[
-                new ListTile(
-                  leading: const Icon(Icons.location_city),
-                  title: Text("Location"),
-                  trailing: Icon(Icons.arrow_right, size: 30),
-                ),
-                new ListTile(
-                  leading: const Icon(Icons.alternate_email),
-                  title:
-                      Text(mentionUserTitle.padRight(20, ' ') + mentionedUser),
-                  trailing: IconButton(
-                    icon: Icon(Icons.arrow_right, size: 30),
-                    iconSize: 48,
-                    onPressed: () async {
-                      String result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MentionUserWidget(),
-                        ),
-                      );
-                      setState(() {
-                        mentionedUser = result.replaceAll('"', '');
-                      });
-                    },
-                  ),
-                ),
-                new ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text("Share With"),
-                  trailing: DropdownButton<AccessControlType>(
-                    value: accessControl,
-                    icon: Icon(Icons.arrow_downward),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (AccessControlType newValue) {
-                      setState(() {
-                        accessControl = newValue;
-                      });
-                    },
-                    items: <AccessControlType>[
-                      AccessControlType.public,
-                      AccessControlType.private,
-                      AccessControlType.visibleToSpecificFriends,
-                      AccessControlType.invisibleToSpecificFriends
-                    ].map<DropdownMenuItem<AccessControlType>>(
-                        (AccessControlType accessControlType) {
-                      return DropdownMenuItem<AccessControlType>(
-                        value: accessControlType,
-                        child: Text(accessControlType.toHumanReadableString()),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+                                  setState(() {
+                                    imageFile = selectedImage;
+                                    photoUploaded = true;
+                                  });
+                                },
+                              ),
+                      ))),
             ),
-          )
-        ],
+            Container(
+              margin: EdgeInsets.only(top: height / 10),
+              child: new Column(
+                children: <Widget>[
+                  new ListTile(
+                    leading: const Icon(Icons.location_city),
+                    title: Text("Location"),
+                    trailing: Icon(Icons.arrow_right, size: 30),
+                  ),
+                  new ListTile(
+                    leading: const Icon(Icons.alternate_email),
+                    title: Text(
+                        mentionUserTitle.padRight(20, ' ') + mentionedUser),
+                    trailing: IconButton(
+                      icon: Icon(Icons.arrow_right, size: 30),
+                      iconSize: 48,
+                      onPressed: () async {
+                        String result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MentionUserWidget(),
+                          ),
+                        );
+                        setState(() {
+                          mentionedUser = result.replaceAll('"', '');
+                        });
+                      },
+                    ),
+                  ),
+                  new ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Text("Share With"),
+                    trailing: DropdownButton<AccessControlType>(
+                      value: accessControl,
+                      icon: Icon(Icons.arrow_downward),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (AccessControlType newValue) {
+                        setState(() {
+                          accessControl = newValue;
+                        });
+                      },
+                      items: <AccessControlType>[
+                        AccessControlType.public,
+                        AccessControlType.private,
+                        AccessControlType.visibleToSpecificFriends,
+                        AccessControlType.invisibleToSpecificFriends
+                      ].map<DropdownMenuItem<AccessControlType>>(
+                          (AccessControlType accessControlType) {
+                        return DropdownMenuItem<AccessControlType>(
+                          value: accessControlType,
+                          child:
+                              Text(accessControlType.toHumanReadableString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

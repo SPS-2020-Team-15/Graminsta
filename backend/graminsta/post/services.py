@@ -133,7 +133,7 @@ def get_timeline_posts(request_user):
                                 Q(publisher=request_user) |
                                 Q(mention_user=request_user) |
                                 Q(marked_user=request_user))
-    return (posts | hot_posts).distinct()
+    return (posts | hot_posts).distinct().order_by("-created_at")
 
 
 def add_comment(post_id, user, comment):
